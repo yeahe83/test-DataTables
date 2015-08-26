@@ -1,0 +1,29 @@
+﻿---------------------------------------------------------
+xy.datatables.js 
+---------------------------------------------------------
+v15.0106.0907 // ajax语句加了时间戳
+v15.0203.1654 // 去除sPaginationType
+v15.0323.1456 // 加上直接载入data(json)数据，之前只有从ajax载入数据
+v15.0430.1649 // 加上了列缺省值，防止tn/4的警告
+v15.0728.1734 // 修改了modal上select的赋值方式
+v15.0824.1446 // 取消了非弹出方式编辑，修改了删除功能的post参数(ids->id)，增加i18n相关，callback函数名称全部更换。兼容差异较大，谨慎更新。
+    fnBeforeModalEdit-->fnModalInit
+    fnBeforeModalShow-->fnModalShowing
+    fnBeforeModalSubmit-->fnModalSubmitting
+    fnAfterDataLoaded-->fnDataLoaded
+    fnAfterDrawe-->fnDrawn
+v15.0825.1500 // 多选删除功能内部的修改，上一版提交的删除功能参数变更取消(id->ids)
+v15.0826.0925 // 修正i18n为null的错误
+
+
+---------------------------------------------------------
+xy.ztree.js
+---------------------------------------------------------
+v15.0728.1734 // 对button类型的下拉有一些调整
+v15.0825.1500 // button方式的下拉改为自适应宽度且集成了style，加入参数ignoreHalf用于制定半勾的是否计入统计，修正初始化勾选错误的问题，缺省改为button作下拉框，添加空白缺省文字
+
+
+
+
+
+

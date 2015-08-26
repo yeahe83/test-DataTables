@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+
+    <!-- css -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/datatables/1.10.8/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- html -->
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">标题</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-sm btn-primary" id="btn_add"><i class="fa fa-plus"></i> 新增</button>
+                        <button type="button" class="btn btn-sm btn-danger" id="btn_del"><i class="fa fa-trash-o"></i> 删除</button>
+                    </div>
+                    <table class="table table-striped table-hover" id="table">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h5 class="modal-title">标题</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label" for="Name">姓名</label>
+                                            <input class="form-control input-sm" id="Name" name="Name" data-field="Name" type="text" placeholder="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label" for="Sex">性别</label>
+                                            <select class="form-control input-sm" id="Sex" name="Sex" data-field="Sex"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label" for="Memo">描述</label>
+                                            <textarea class="form-control input-sm" id="Memo" name="Memo" data-field="Memo" placeholder="" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="IsValid" name="IsValid" data-field="IsValid"> 是否有效
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-sm cancel" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</button>
+                            <button type="submit" class="btn btn-primary btn-sm save"><i class="fa fa-save"></i> 保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- js -->
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//cdn.bootcss.com/datatables/1.10.8/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.bootcss.com/datatables/1.10.8/js/dataTables.bootstrap.min.js"></script>
+    <script src="js/xy.datatables.js"></script>
+    <script>
+
+        $(function () {
+
+            // 性别下拉
+            $("#Sex").append(String()
+                + "<option value='male'>男</option>"
+                + "<option value='female'>女</option>");
+
+            // dataTables
+            new xy.datatables({
+                tableId: "table",
+                btnAddId: "btn_add",
+                btnDelId: "btn_del",
+                modalId: "modal",
+                optionDom: 'rt<"bottom"ip><"clear">',
+                cols: [
+                    { display: "", fieldName: null, action: "CheckBox", orderable: false },
+                    { display: "ID", fieldName: "ID", visible: false, key: true },
+                    { display: "姓名", fieldName: "Name", visible: true },
+                    { display: "性别", fieldName: "Sex", visible: true, render: function (data, type, row) {
+                        switch (data) {
+                            case "male": return "男";
+                            case "female": return "女";
+                            default: return "";
+                        }
+                    } },
+                    { display: "是否有效", fieldName: "IsValid", visible: true, render: function (data, type, row) {
+                        return data ? "是" : "否";
+                    } },
+                    { display: "描述", fieldName: "Memo", visible: false },
+                    { display: "", fieldName: null, action: "Edit", visible: true }
+                ],
+                ajax: {
+                    show: "server/simple.ashx?Func=show" + "&date=" + new Date().getTime(), // 可以加其他查询条件
+                    add: "server/simple.ashx?Func=add" + "&date=" + new Date().getTime(), // 若有key则无需加查询条件
+                    edit: "server/simple.ashx?Func=edit" + "&date=" + new Date().getTime(), // 若有key则无需加查询条件
+                    delete: "server/simple.ashx?Func=delete" + "&date=" + new Date().getTime(), // 若有key则无需加查询条件
+                },
+            }).init();
+
+
+
+        })
+
+    </script>
+
+</body>
+</html>
