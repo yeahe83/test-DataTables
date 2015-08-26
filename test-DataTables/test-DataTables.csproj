@@ -70,12 +70,15 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="7.i18n----.html" />
-    <Content Include="js\i18next.js" />
+    <Content Include="7.i18n.html" />
+    <Content Include="js\i18next-1.10.1.js" />
+    <Content Include="js\i18next-1.10.1.min.js" />
     <Content Include="packages.config" />
     <Content Include="server\simple.ashx" />
     <Content Include="server\datepicker.ashx" />
     <Content Include="server\ztree.ashx" />
+    <Content Include="locales\translation-zh-CN.json" />
+    <Content Include="locales\translation-en.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

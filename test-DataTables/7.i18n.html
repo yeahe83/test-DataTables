@@ -31,11 +31,11 @@
         <div class="row">
             <div class="panel panel-danger">
                 <div class="panel-heading">
-                    <h3 class="panel-title">标题</h3>
+                    <h3 class="panel-title" data-i18n="7-i18n.panel-title">标题11</h3>
                 </div>
                 <div class="panel-body">
                     <div class="pull-right">
-                        <button type="button" class="btn btn-sm btn-primary" id="btn_add"><i class="fa fa-plus"></i> 新增</button>
+                        <button type="button" class="btn btn-sm btn-primary" id="btn_add"><i class="fa fa-plus"></i> <span data-i18n="7-i18n.btn_add">新增11</span></button>
                     </div>
                     <table class="table table-striped table-hover" id="table">
                         <thead></thead>
@@ -49,7 +49,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h5 class="modal-title">标题</h5>
+                            <h5 class="modal-title" data-i18n="7-i18n.modal-title">标题11</h5>
                         </div>
                         <div class="modal-body">
 
@@ -63,13 +63,13 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label class="control-label" for="Name">姓名</label>
+                                                <label class="control-label" for="Name" data-i18n="7-i18n.Name">姓名11</label>
                                                 <input class="form-control input-sm" id="Name" name="Name" data-field="Name" type="text" placeholder="" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label class="control-label" for="Sex">性别</label>
+                                                <label class="control-label" for="Sex" data-i18n="7-i18n.Sex">性别11</label>
                                                 <select class="form-control input-sm" id="Sex" name="Sex" data-field="Sex"></select>
                                             </div>
                                         </div>
@@ -77,13 +77,13 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label class="control-label" for="Birth">出生日期</label>
+                                                <label class="control-label" for="Birth" data-i18n="7-i18n.Birth">出生日期11</label>
                                                 <input class="form-control input-sm input-date" id="Birth" name="Birth" data-field="Birth" type="text" placeholder="" data-date-format="yyyy-mm-dd" data-date-today-btn="true" data-date-language="zh-CN" data-date-orientation="top auto" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label class="control-label" for="Age">年龄</label>
+                                                <label class="control-label" for="Age" data-i18n="7-i18n.Age">年龄11</label>
                                                 <input class="form-control input-sm" id="Age" name="Age" data-field="Age" type="text" placeholder="" />
                                             </div>
                                         </div>
@@ -92,13 +92,13 @@
                                         <div class="input-daterange" data-date-format="yyyy-mm-dd" data-date-today-btn="true" data-date-language="zh-CN" data-date-orientation="top auto">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label class="control-label" for="DateStart">开始日期</label>
+                                                    <label class="control-label" for="DateStart" data-i18n="7-i18n.DateStart">开始日期11</label>
                                                     <input class="form-control input-sm" id="DateStart" name="DateStart" data-field="DateStart" type="text" placeholder="" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label class="control-label" for="DateEnd">结束日期</label>
+                                                    <label class="control-label" for="DateEnd" data-i18n="7-i18n.DateEnd">结束日期11</label>
                                                     <input class="form-control input-sm" id="DateEnd" name="DateEnd" data-field="DateEnd" type="text" placeholder="" />
                                                 </div>
                                             </div>
@@ -107,7 +107,7 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label class="control-label" for="District">区域</label>
+                                                <label class="control-label" for="District" data-i18n="7-i18n.District">区域11</label>
                                                 <div class="form-group">
                                                     <div class="ztree_dropdown" id="District"></div>
                                                 </div>
@@ -117,7 +117,7 @@
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="form-group">
-                                                <label class="control-label" for="Memo">描述</label>
+                                                <label class="control-label" for="Memo" data-i18n="7-i18n.Memo">描述11</label>
                                                 <textarea class="form-control input-sm" id="Memo" name="Memo" data-field="Memo" placeholder="" rows="3"></textarea>
                                             </div>
                                         </div>
@@ -126,7 +126,7 @@
                                         <div class="col-sm-6">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" id="IsValid" name="IsValid" data-field="IsValid"> 是否有效
+                                                    <input type="checkbox" id="IsValid" name="IsValid" data-field="IsValid"> <span data-i18n="7-i18n.IsValid">是否有效11</span>
                                                 </label>
                                             </div>
                                         </div>
@@ -136,8 +136,8 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default btn-sm cancel" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</button>
-                            <button type="submit" class="btn btn-primary btn-sm save"><i class="fa fa-save"></i> 保存</button>
+                            <button type="button" class="btn btn-default btn-sm cancel" data-dismiss="modal"><i class="fa fa-times"></i> <span data-i18n="7-i18n.close">关闭11</span></button>
+                            <button type="submit" class="btn btn-primary btn-sm save"><i class="fa fa-save"></i> <span data-i18n="7-i18n.save">保存11</span></button>
                         </div>
                     </div>
                 </div>
@@ -156,30 +156,40 @@
     <script src="js/bootstrapValidator.js"></script>
     <script src="js/zTree/jquery.ztree.all-3.5.min.js"></script>
     <script src="js/xy.ztree.js"></script>
+    <script src="js/i18next-1.10.1.js"></script>
     <script>
 
         $(function () {
 
+            // i18n
+            i18n.init({
+                resGetPath: 'locales/__ns__-__lng__.json',
+                getAsync: false,
+                debug: true
+            });
+            $("[data-i18n]").i18n();
+
+
             // 性别下拉
             $("#Sex").append(String()
-                + "<option value='male'>男</option>"
-                + "<option value='female'>女</option>");
+                + "<option value='male'>" + i18n.t("7-i18n.male") + "</option>"
+                + "<option value='female'>" + i18n.t("7-i18n.female") + "</option>");
 
             // 区域下拉
             var zNodes = [
-                { id: 1, pId: -1, name: "深圳市", checked: false },
-                { id: 2, pId: 1, name: "罗湖区", checked: false },
-                { id: 3, pId: 1, name: "福田区", checked: false },
-                { id: 4, pId: 1, name: "南山区", checked: false },
-                { id: 5, pId: 1, name: "盐田区", checked: false },
-                { id: 6, pId: 1, name: "宝安区", checked: false },
-                { id: 7, pId: 1, name: "龙岗区", checked: false },
+                { id: 1, pId: -1, name: i18n.t("7-i18n.shenzhen"), checked: false },
+                { id: 2, pId: 1, name: i18n.t("7-i18n.luohu"), checked: false },
+                { id: 3, pId: 1, name: i18n.t("7-i18n.futian"), checked: false },
+                { id: 4, pId: 1, name: i18n.t("7-i18n.nanshan"), checked: false },
+                { id: 5, pId: 1, name: i18n.t("7-i18n.yantian"), checked: false },
+                { id: 6, pId: 1, name: i18n.t("7-i18n.baoan"), checked: false },
+                { id: 7, pId: 1, name: i18n.t("7-i18n.longgang"), checked: false },
             ];
             new xy.ztree.dropdown({
                 domId: "District",
-                //fieldname: "District",
                 zNodes: zNodes,
                 checkEnable: true,
+                emptyText: i18n.t("7-i18n.ztree_emptyText")
             }).init();
             var treeObj = $.fn.zTree.getZTreeObj("ztree_District");
             treeObj.expandAll(true);
@@ -193,22 +203,22 @@
                     Name: {
                         validators: {
                             notEmpty: {
-                                message: "请输入姓名"
+                                message: i18n.t("7-i18n.Name_notEmpty")
                             }
                         }
                     },
                     Age: {
                         validators: {
                             notEmpty: {
-                                message: "请输入年龄"
+                                message: i18n.t("7-i18n.Age_notEmpty")
                             },
                             integer: {
-                                message: "年龄为整数"
+                                message: i18n.t("7-i18n.Age_integer")
                             },
                             between: {
                                 min: 0,
                                 max: 100,
-                                message: "年龄范围：0-100"
+                                message: i18n.t("7-i18n.Age_between")
                             }
                         }
                     },
@@ -222,21 +232,22 @@
                 btnAddId: "btn_add",
                 modalId: "modal",
                 optionDom: 'rt<"bottom"ip><"clear">',
+                i18n: i18n,
                 cols: [
                     { display: "ID", fieldName: "ID", visible: false, key: true },
-                    { display: "姓名", fieldName: "Name", visible: true },
-                    { display: "性别", fieldName: "Sex", visible: true, render: function (data, type, row) {
+                    { display: i18n.t("7-i18n.Name"), fieldName: "Name", visible: true },
+                    { display: i18n.t("7-i18n.Sex"), fieldName: "Sex", visible: true, render: function (data, type, row) {
                         switch (data) {
-                            case "male": return "男";
-                            case "female": return "女";
+                            case "male": return i18n.t("7-i18n.male");
+                            case "female": return i18n.t("7-i18n.female");
                             default: return "";
                         }
                     } },
-                    { display: "出生日期", fieldName: "Birth", visible: true },
-                    { display: "年龄", fieldName: "Age", visible: true },
-                    { display: "开始日期", fieldName: "DateStart", visible: true },
-                    { display: "结束日期", fieldName: "DateEnd", visible: true },
-                    { display: "区域", fieldName: "District", visible: true, render: function (data, type, row) {
+                    { display: i18n.t("7-i18n.Birth"), fieldName: "Birth", visible: true },
+                    { display: i18n.t("7-i18n.Age"), fieldName: "Age", visible: true },
+                    { display: i18n.t("7-i18n.DateStart"), fieldName: "DateStart", visible: true },
+                    { display: i18n.t("7-i18n.DateEnd"), fieldName: "DateEnd", visible: true },
+                    { display: i18n.t("7-i18n.District"), fieldName: "District", visible: true, render: function (data, type, row) {
                         var ret = "";
                         if (data != null) {
                             var array = data.split(",");
@@ -254,9 +265,9 @@
                         }
                         return ret;
                     } },
-                    { display: "描述", fieldName: "Memo", visible: false },
-                    { display: "是否有效", fieldName: "IsValid", visible: true, render: function (data, type, row) {
-                        return data ? "是" : "否";
+                    { display: i18n.t("7-i18n.Memo"), fieldName: "Memo", visible: false },
+                    { display: i18n.t("7-i18n.IsValid"), fieldName: "IsValid", visible: true, render: function (data, type, row) {
+                        return data ? i18n.t("7-i18n.yes") : i18n.t("7-i18n.no");
                     } },
                     { display: "", fieldName: null, action: "Edit", visible: true }
                 ],
@@ -283,22 +294,6 @@
                     return bootstrapValidator.validate().isValid();
                 },
                 fnDrawn: function () {
-                    var oTable = $('#table').DataTable();
-                    $("#table a.start").off("click").click(function () {
-                        var tr_dom = $(this).closest("tr")[0];
-                        var row_data = oTable.row(tr_dom).data();
-                        alert(row_data.Name);
-                    });
-                    $("#table a.stop").off("click").click(function () {
-                        var tr_dom = $(this).closest("tr")[0];
-                        var row_data = oTable.row(tr_dom).data();
-                        alert(row_data.Name);
-                    });
-                    $("#table a.view").off("click").click(function () {
-                        var tr_dom = $(this).closest("tr")[0];
-                        var row_data = oTable.row(tr_dom).data();
-                        alert(row_data.Name);
-                    });
                 }
             }).init();
 

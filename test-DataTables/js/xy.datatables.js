@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v15.0826.0925)
+ * xy.datatables.js (v15.0826.1755)
  * ========================================================= */
 
 /**
@@ -77,7 +77,7 @@ xy.datatables = function (option) {
     this.$btnDel = $("#" + this.btnDelId);
     this.$modal = $("#" + this.modalId);
 
-    this.btnEditDeleteHtml = '<a href="#" class="btn btn-primary btn-xs edit"><i class="fa fa-edit"></i> ' + (this.i18n ? this.i18n.t("app.mod") : "编辑") + '</a> <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-trash-o"></i> ' + (this.i18n ? this.i18n.t("app.del") : "删除") + '</a>';
+    this.btnEditDeleteHtml = '<a href="#" class="btn btn-primary btn-xs edit"><i class="fa fa-edit"></i> ' + (this.i18n ? this.i18n.t("xydatetable.mod") : "编辑") + '</a> <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-trash-o"></i> ' + (this.i18n ? this.i18n.t("xydatetable.del") : "删除") + '</a>';
     this.CheckBoxHtml = '<label><input type="checkbox" /><span class="text"></span></label>';
 
 }
@@ -212,7 +212,7 @@ xy.datatables.prototype = (function () {
             {
                 "lengthMenu": [ // 每页显示条数
                     [10, 20, 100, -1], // 值
-                    [10, 20, 100, (this.i18n ? i18n.t("messsage.all") : "全部")] // 显示
+                    [10, 20, 100, (this.i18n ? i18n.t("xydatetable.all") : "全部")] // 显示
                 ],
                 "pageLength": this_.pageLength, // 默认显示条数
                 "dom": this_.optionDom,
@@ -417,7 +417,7 @@ xy.datatables.prototype = (function () {
         // delete
         delete: function (tr_dom) {
             var this_ = this;
-            if (confirm(this.i18n ? i18n.t("messsage.queryonedel") : "确定删除？") == false) {
+            if (confirm(this.i18n ? i18n.t("xydatetable.querydel") : "确定删除？") == false) {
                 return;
             }
 
@@ -461,7 +461,7 @@ xy.datatables.prototype = (function () {
                             else // 单行删除
                                 this_.oTable.row(tr_dom).remove().draw();
                                                         
-                            alert(this.i18n ? i18n.t("messsage.comdel") : "删除成功");
+                            alert(this.i18n ? i18n.t("xydatetable.delsucc") : "删除成功");
                         } else {
                             alert(this.i18n ? i18n.t(data.message) : data.message);
                             return;

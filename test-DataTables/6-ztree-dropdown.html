@@ -283,22 +283,6 @@
                     return bootstrapValidator.validate().isValid();
                 },
                 fnDrawn: function () {
-                    var oTable = $('#table').DataTable();
-                    $("#table a.start").off("click").click(function () {
-                        var tr_dom = $(this).closest("tr")[0];
-                        var row_data = oTable.row(tr_dom).data();
-                        alert(row_data.Name);
-                    });
-                    $("#table a.stop").off("click").click(function () {
-                        var tr_dom = $(this).closest("tr")[0];
-                        var row_data = oTable.row(tr_dom).data();
-                        alert(row_data.Name);
-                    });
-                    $("#table a.view").off("click").click(function () {
-                        var tr_dom = $(this).closest("tr")[0];
-                        var row_data = oTable.row(tr_dom).data();
-                        alert(row_data.Name);
-                    });
                 }
             }).init();
 

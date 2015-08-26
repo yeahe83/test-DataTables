@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "My App"
+  },
+  "xydatetable": {
+    "all": "All",
+    "sPrevious": "Prior",
+    "sNext": "Next",
+    "info": "Current show _START_ to _END_ rows，_TOTAL_ rows in all",
+    "loadingRecords": "Wait...",
+    "zeroRecords": "no data",
+    "mod": "EDIT",
+    "del": "DELETE",
+    "querydel": "Delete？",
+    "delsucc": "Delete Success"
+  },
+  "7-i18n": {
+    "panel-title": "Title",
+    "btn_add": "ADD",
+    "modal-title": "Title",
+    "Name": "Name",
+    "Sex": "Sex",
+    "Birth": "Birth",
+    "Age": "Age",
+    "DateStart": "DateStart",
+    "DateEnd": "DateEnd",
+    "District": "District",
+    "Memo": "Memo",
+    "IsValid": "IsValid",
+    "male": "male",
+    "female": "female",
+    "yes": "YES",
+    "no": "NO",
+    "Name_notEmpty": "Please input Name",
+    "Age_notEmpty": "Please input Age",
+    "Age_integer": "Age is int",
+    "Age_between": "Age range：0-100",
+    "shenzhen": "ShenZhen",
+    "luohu": "LuoHu",
+    "futian": "FuTian",
+    "nanshan": "NanShan",
+    "yantian": "YanTian",
+    "baoan": "BaoAn",
+    "longgang": "LongGang",
+    "ztree_emptyText": "Please Select...",
+    "close": "CLOSE",
+    "save": "SAVE"
+  }
+}

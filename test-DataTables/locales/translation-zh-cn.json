@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "我的程序"
+  },
+  "xydatetable": {
+    "all": "全部",
+    "sPrevious": "前一页",
+    "sNext": "后一页",
+    "info": "当前显示第 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+    "loadingRecords": "请稍候...",
+    "zeroRecords": "没有数据",
+    "mod": "编辑",
+    "del": "删除",
+    "querydel": "确定删除？",
+    "delsucc": "删除成功"
+  },
+  "7-i18n": {
+    "panel-title": "标题",
+    "btn_add": "新增",
+    "modal-title": "标题",
+    "Name": "姓名",
+    "Sex": "性别",
+    "Birth": "出生日期",
+    "Age": "年龄",
+    "DateStart": "开始日期",
+    "DateEnd": "结束日期",
+    "District": "区域",
+    "Memo": "描述",
+    "IsValid": "是否有效",
+    "male": "男",
+    "female": "女",
+    "yes": "是",
+    "no": "否",
+    "Name_notEmpty": "请输入姓名",
+    "Age_notEmpty": "请输入年龄",
+    "Age_integer": "年龄为整数",
+    "Age_between": "年龄范围：0-100",
+    "shenzhen": "深圳市",
+    "luohu": "罗湖区",
+    "futian": "福田区",
+    "nanshan": "南山区",
+    "yantian": "盐田区",
+    "baoan": "宝安区",
+    "longgang": "龙岗区",
+    "ztree_emptyText": "请选择...",
+    "close": "关闭",
+    "save": "保存"
+  }
+}
