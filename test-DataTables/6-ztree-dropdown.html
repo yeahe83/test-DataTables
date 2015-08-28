@@ -177,7 +177,6 @@
             ];
             new xy.ztree.dropdown({
                 domId: "District",
-                //fieldname: "District",
                 zNodes: zNodes,
                 checkEnable: true,
             }).init();
@@ -197,6 +196,13 @@
                             }
                         }
                     },
+                    District: {
+                        validators: {
+                            notEmpty: {
+                                message: "请选择区域"
+                            }
+                        }
+                    },
                     Age: {
                         validators: {
                             notEmpty: {
@@ -213,7 +219,7 @@
                         }
                     },
                 },
-
+                excluded: [],
             });
 
             // dataTables

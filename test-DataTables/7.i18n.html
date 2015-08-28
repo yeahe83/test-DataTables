@@ -207,6 +207,13 @@
                             }
                         }
                     },
+                    District: {
+                        validators: {
+                            notEmpty: {
+                                message: "请选择区域"
+                            }
+                        }
+                    },
                     Age: {
                         validators: {
                             notEmpty: {
@@ -223,7 +230,7 @@
                         }
                     },
                 },
-
+                excluded: [],
             });
 
             // dataTables

@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.ztree.js (v15.0825.1500)
+ * xy.ztree.js (v15.0828.0848)
  * ========================================================= */
 
 var xy;
@@ -277,10 +277,10 @@ xy.ztree.dropdown = function (option)
             + ' <div class="btn-group" style="width:100%"> '
                 + '<div>'
                     + ' <button type="button" class="btn btn-default btn-sm" style="width:100%"> '
-                        + ' <span class="text darkgray pull-left" name="text_' + this.fieldname + '" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span> '
-                        + ' <span class="caret pull-right" style="margin-top:7px"></span> '
+                        + ' <span class="text darkgray pull-left" name="text_' + this.fieldname + '" style="width:90%;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span> '
+                        + ' <span class="caret pull-right" style="margin-top:6px;margin-bottom:7px;"></span> '
                     + ' </button> '
-                    + ' <input type="hidden" class="hidden" name="' + this.fieldname + '" value="" /> '
+                    + ' <input type="text" class="hidden" name="' + this.fieldname + '" data-field="' + this.fieldname + '" value="" style="display:none;" /> '
                     + ' <div class="menuContent" style="display:none;position:absolute;z-index:1500;width:100%;"> '
                         + ' <ul class="ztree" id="ztree_' + this.fieldname + '" style="margin-top:0;width:100%;height:360px;border:1px solid #617775;background:#ffffff;overflow-y:scroll;overflow-x:auto;" ></ul> '
                     + ' </div> '
@@ -437,7 +437,8 @@ xy.ztree.dropdown.prototype = (function () {
                 }
                 if (names.length > 0) names = names.substring(0, names.length - 1);
                 if (ids.length > 0) ids = ids.substring(0, ids.length - 1);
-                this_.$hidden.val(ids); //.change();
+                //this_.$hidden.val(ids); //.change();
+                this_.$hidden.val(ids).triggerHandler("input"); // new
                 if (this_.style == "text") {
                     this_.$text.val(names).click().change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
                 }
@@ -448,7 +449,8 @@ xy.ztree.dropdown.prototype = (function () {
                         this_.$text.text(this_.emptyText);
                     }
                     this_.$text.val(names);
-                    this_.$text.change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
+                    //this_.$text.change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
+                    this_.$text.change(); // new
                 } else if (this_.style == "modal") {
                     if (names != "") {
                         this_.$button.text(names);
