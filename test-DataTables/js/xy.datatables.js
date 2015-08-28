@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v15.0826.1755)
+ * xy.datatables.js (v15.0828.1606)
  * ========================================================= */
 
 /**
@@ -282,7 +282,6 @@ xy.datatables.prototype = (function () {
         // add/edit
         edit: function (tr_dom) {
             var this_ = this;
-            var row_data;
 
             // 取消
             this_.$modal.find(".cancel").unbind("click").click(function () {
@@ -291,6 +290,20 @@ xy.datatables.prototype = (function () {
 
             // 保存
             this_.$modal.find(".save").unbind("click").click(function () {
+
+                // 从表格读取数据
+                var row_data;
+                if (tr_dom) // 编辑
+                    row_data = this_.oTable.row(tr_dom).data();
+                else // 新增
+                    row_data = {};
+
+                // 提交前的callback
+                if (this_.fnModalSubmitting) {
+                    var ret = this_.fnModalSubmitting(row_data);
+                    if (!ret)
+                        return;
+                }
 
                 // 准备数据
                 for (var i = 0; i < this_.cols.length; i++) {
@@ -326,13 +339,6 @@ xy.datatables.prototype = (function () {
                     }
                 }
 
-                // 提交前的callback
-                if (this_.fnModalSubmitting) {
-                    var ret = this_.fnModalSubmitting(row_data);
-                    if (!ret)
-                        return;
-                }
-
                 // 保存到数据库
                 $.ajax({
                     type: "POST",
@@ -362,6 +368,8 @@ xy.datatables.prototype = (function () {
                 });
             });
 
+            // 从表格读取数据
+            var row_data;
             if (tr_dom) // 编辑
                 row_data = this_.oTable.row(tr_dom).data();
             else // 新增

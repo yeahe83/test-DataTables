@@ -78,7 +78,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label class="control-label" for="Birth">出生日期</label>
-                                                <input class="form-control input-sm input-date" id="Birth" name="Birth" data-field="Birth" type="text" placeholder="" data-date-format="yyyy-mm-dd" data-date-today-btn="true" data-date-language="zh-CN" data-date-orientation="top auto" />
+                                                <input class="form-control input-sm input-date" id="Birth" name="Birth" data-field="Birth" type="text" placeholder="" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" data-date-orientation="top auto" data-date-clear-btn="true"/>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -89,7 +89,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="input-daterange" data-date-format="yyyy-mm-dd" data-date-today-btn="true" data-date-language="zh-CN" data-date-orientation="top auto">
+                                        <div class="input-daterange" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" data-date-orientation="top auto" data-date-clear-btn="true">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label class="control-label" for="DateStart">开始日期</label>
@@ -236,6 +236,13 @@
                             }
                         }
                     },
+                    Birth: {
+                        validators: {
+                            notEmpty: {
+                                message: "请选择出生日期"
+                            }
+                        }
+                    },
                     Age: {
                         validators: {
                             notEmpty: {
@@ -248,6 +255,20 @@
                                 min: 0,
                                 max: 100,
                                 message: "年龄范围：0-100"
+                            }
+                        }
+                    },
+                    DateStart: {
+                        validators: {
+                            notEmpty: {
+                                message: "请选择开始日期"
+                            }
+                        }
+                    },
+                    DateEnd: {
+                        validators: {
+                            notEmpty: {
+                                message: "请选择结束日期"
                             }
                         }
                     },
@@ -321,11 +342,18 @@
 
                     var bootstrapValidator = $("#form1").data('bootstrapValidator');
                     bootstrapValidator.resetForm(true);
+
+                    $("#Birth, #DateStart, #DateEnd").off("change");// 避免一进来就显示验证图标
+
                     return true;
                 },
                 fnModalShowing: function () {
                     $('#modal .input-date').datepicker();
                     $('#modal .input-daterange').datepicker();
+
+                    $("#Birth, #DateStart, #DateEnd").change(function () { // 日期编辑框变化触发验证
+                        $(this).triggerHandler("input");
+                    });
                 },
                 fnModalSubmitting: function () {
                     var bootstrapValidator = $("#form1").data('bootstrapValidator')
