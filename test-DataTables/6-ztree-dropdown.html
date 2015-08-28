@@ -113,6 +113,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="CurrDistrict">当前区域</label>
+                                                <div class="form-group">
+                                                    <div class="ztree_dropdown" id="CurrDistrict"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
@@ -183,6 +191,24 @@
             var treeObj = $.fn.zTree.getZTreeObj("ztree_District");
             treeObj.expandAll(true);
 
+            // 当前区域下拉
+            var zNodes_Curr = [
+                { id: "", pId: -1, name: "请选择...", checked: false },
+                { id: 1, pId: -1, name: "深圳市", checked: false },
+                { id: 2, pId: 1, name: "罗湖区", checked: false },
+                { id: 3, pId: 1, name: "福田区", checked: false },
+                { id: 4, pId: 1, name: "南山区", checked: false },
+                { id: 5, pId: 1, name: "盐田区", checked: false },
+                { id: 6, pId: 1, name: "宝安区", checked: false },
+                { id: 7, pId: 1, name: "龙岗区", checked: false },
+            ];
+            new xy.ztree.dropdown({
+                domId: "CurrDistrict",
+                zNodes: zNodes_Curr,
+            }).init();
+            var treeObj_Curr = $.fn.zTree.getZTreeObj("ztree_CurrDistrict");
+            treeObj_Curr.expandAll(true);
+
             // 验证声明
             $("#form1").bootstrapValidator({
                 submitHandler: function (validator, form, submitButton) {
@@ -200,6 +226,13 @@
                         validators: {
                             notEmpty: {
                                 message: "请选择区域"
+                            }
+                        }
+                    },
+                    CurrDistrict: {
+                        validators: {
+                            notEmpty: {
+                                message: "请选择当前区域"
                             }
                         }
                     },
@@ -257,6 +290,16 @@
                             }
                             if (array.length > 0)
                                 ret = ret.substring(0, ret.length - 1);
+                        }
+                        return ret;
+                    } },
+                    { display: "当前区域", fieldName: "CurrDistrict", visible: true, render: function (data, type, row) {
+                        var ret = "";
+                        if (data != null) {
+                            for (var i in zNodes_Curr) {
+                                if (zNodes_Curr[i].id == data)
+                                    ret = zNodes_Curr[i].name;
+                            }
                         }
                         return ret;
                     } },

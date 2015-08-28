@@ -18,6 +18,7 @@ namespace test_DataTables.server
         public DateTime? DateStart;
         public DateTime? DateEnd;
         public string District;
+        public string CurrDistrict;
         public bool IsValid;
     }
 
@@ -94,6 +95,7 @@ namespace test_DataTables.server
             item_.DateStart = item.DateStart;
             item_.DateEnd = item.DateEnd;
             item_.District = item.District;
+            item_.CurrDistrict = item.CurrDistrict;
             item_.IsValid = item.IsValid;
 
             // 保存到json文件

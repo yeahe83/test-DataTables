@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.ztree.js (v15.0828.0848)
+ * xy.ztree.js (v15.0828.0941)
  * ========================================================= */
 
 var xy;
@@ -395,7 +395,8 @@ xy.ztree.dropdown.prototype = (function () {
                 }
                 if (names.length > 0) names = names.substring(0, names.length - 1);
                 if (ids.length > 0) ids = ids.substring(0, ids.length - 1);
-                this_.$hidden.val(ids); //.change(); // 再change就又触发事件了
+                //this_.$hidden.val(ids); //.change(); // 再change就又触发事件了
+                this_.$hidden.val(ids).triggerHandler("input"); // new
                 if (this_.style == "text") {
                     this_.$text.val(names).click().change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
                 } else if (this_.style == "button") {
@@ -405,7 +406,8 @@ xy.ztree.dropdown.prototype = (function () {
                         this_.$text.text(this_.emptyText);
                     }
                     this_.$text.val(names); // bootstrapvalidator.js 判断的是value
-                    this_.$text.change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
+                    //this_.$text.change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
+                    this_.$text.change(); // new
                 } else if (this_.style == "modal") {
                     if (names != "") {
                         this_.$button.text(names);

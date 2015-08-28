@@ -113,6 +113,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="CurrDistrict" data-i18n="7-i18n.CurrDistrict">当前区域11</label>
+                                                <div class="form-group">
+                                                    <div class="ztree_dropdown" id="CurrDistrict"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12">
@@ -194,6 +202,24 @@
             var treeObj = $.fn.zTree.getZTreeObj("ztree_District");
             treeObj.expandAll(true);
 
+            // 当前区域下拉
+            var zNodes_Curr = [
+                { id: "", pId: -1, name: i18n.t("7-i18n.ztree_emptyText"), checked: false },
+                { id: 1, pId: -1, name: i18n.t("7-i18n.shenzhen"), checked: false },
+                { id: 2, pId: 1, name: i18n.t("7-i18n.luohu"), checked: false },
+                { id: 3, pId: 1, name: i18n.t("7-i18n.futian"), checked: false },
+                { id: 4, pId: 1, name: i18n.t("7-i18n.nanshan"), checked: false },
+                { id: 5, pId: 1, name: i18n.t("7-i18n.yantian"), checked: false },
+                { id: 6, pId: 1, name: i18n.t("7-i18n.baoan"), checked: false },
+                { id: 7, pId: 1, name: i18n.t("7-i18n.longgang"), checked: false },
+            ];
+            new xy.ztree.dropdown({
+                domId: "CurrDistrict",
+                zNodes: zNodes_Curr,
+            }).init();
+            var treeObj_Curr = $.fn.zTree.getZTreeObj("ztree_CurrDistrict");
+            treeObj_Curr.expandAll(true);
+
             // 验证声明
             $("#form1").bootstrapValidator({
                 submitHandler: function (validator, form, submitButton) {
@@ -210,7 +236,14 @@
                     District: {
                         validators: {
                             notEmpty: {
-                                message: "请选择区域"
+                                message: i18n.t("7-i18n.District_notEmpty")
+                            }
+                        }
+                    },
+                    CurrDistrict: {
+                        validators: {
+                            notEmpty: {
+                                message: i18n.t("7-i18n.CurrDistrict_notEmpty")
                             }
                         }
                     },
@@ -269,6 +302,16 @@
                             }
                             if (array.length > 0)
                                 ret = ret.substring(0, ret.length - 1);
+                        }
+                        return ret;
+                    } },
+                    { display: i18n.t("7-i18n.CurrDistrict"), fieldName: "CurrDistrict", visible: true, render: function (data, type, row) {
+                        var ret = "";
+                        if (data != null) {
+                            for (var i in zNodes_Curr) {
+                                if (zNodes_Curr[i].id == data)
+                                    ret = zNodes_Curr[i].name;
+                            }
                         }
                         return ret;
                     } },

@@ -21,7 +21,8 @@ xy.ztree.js
 ---------------------------------------------------------
 v15.0728.1734 // 对button类型的下拉有一些调整
 v15.0825.1500 // button方式的下拉改为自适应宽度且集成了style，加入参数ignoreHalf用于制定半勾的是否计入统计，修正初始化勾选错误的问题，缺省改为button作下拉框，添加空白缺省文字
-v15.0828.0848 // button方式支持bootstrapvalidator
+v15.0828.0848 // button方式支持bootstrapvalidator(勾选)
+v15.0828.0941 // button方式支持bootstrapvalidator(非勾选)
 
 
 
