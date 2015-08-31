@@ -33,6 +33,7 @@
     "yes": "是",
     "no": "否",
     "Name_notEmpty": "请输入姓名",
+    "Sex_notEmpty": "请选择性别",
     "Birth_notEmpty": "请选择出生日期",
     "Age_notEmpty": "请输入年龄",
     "Age_integer": "年龄为整数",

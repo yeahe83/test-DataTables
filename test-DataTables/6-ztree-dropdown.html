@@ -170,8 +170,14 @@
 
             // 性别下拉
             $("#Sex").append(String()
+                + "<option value=''>请选择...</option>"
                 + "<option value='male'>男</option>"
                 + "<option value='female'>女</option>");
+
+            // 日期编辑框变化触发验证
+            $("#Birth, #DateStart, #DateEnd").change(function () {
+                $(this).triggerHandler("input");
+            });
 
             // 区域下拉
             var zNodes = [
@@ -219,6 +225,13 @@
                         validators: {
                             notEmpty: {
                                 message: "请输入姓名"
+                            }
+                        }
+                    },
+                    Sex: {
+                        validators: {
+                            notEmpty: {
+                                message: "请选择性别"
                             }
                         }
                     },
@@ -340,20 +353,16 @@
                     $('#modal .input-date').datepicker('remove');
                     $('#modal .input-daterange').datepicker('remove');  // 1.4.0 会报错，解决方案为 https://github.com/eternicode/bootstrap-datepicker/pull/1488
 
-                    var bootstrapValidator = $("#form1").data('bootstrapValidator');
-                    bootstrapValidator.resetForm(true);
-
-                    $("#Birth, #DateStart, #DateEnd").off("change");// 避免一进来就显示验证图标
-
                     return true;
                 },
                 fnModalShowing: function () {
                     $('#modal .input-date').datepicker();
                     $('#modal .input-daterange').datepicker();
 
-                    $("#Birth, #DateStart, #DateEnd").change(function () { // 日期编辑框变化触发验证
-                        $(this).triggerHandler("input");
-                    });
+                    // 清空验证标签
+                    var bootstrapValidator = $("#form1").data('bootstrapValidator');
+                    bootstrapValidator.resetForm(false);
+
                 },
                 fnModalSubmitting: function () {
                     var bootstrapValidator = $("#form1").data('bootstrapValidator')

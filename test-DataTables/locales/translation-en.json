@@ -33,6 +33,7 @@
     "yes": "YES",
     "no": "NO",
     "Name_notEmpty": "Please input Name",
+    "Sex_notEmpty": "Please input Sex",
     "Birth_notEmpty": "Please input Birth",
     "Age_notEmpty": "Please input Age",
     "Age_integer": "Age is int",
