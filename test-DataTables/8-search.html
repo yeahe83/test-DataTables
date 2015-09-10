@@ -1,0 +1,394 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+
+    <!-- css -->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/datatables/1.10.8/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link href="css/zTree/metroStyle/metroStyle.css" rel="stylesheet">
+
+    <style>
+        .modal .has-feedback .form-control {
+            padding-right: 5px;
+        }
+
+        .modal .form-horizontal .form-group {
+            margin: 0px;
+        }
+
+        .input-daterange input {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- html -->
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">标题</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-sm btn-primary" id="btn_add"><i class="fa fa-plus"></i> 新增</button>
+                        <button type="button" class="btn btn-sm btn-primary" id="btn_search"><i class="fa fa-search"></i> 查询</button>
+                    </div>
+                    <table class="table table-striped table-hover" id="table">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h5 class="modal-title">标题</h5>
+                        </div>
+                        <div class="modal-body">
+
+                            <form id="form1" method="post" class="form-horizontal"
+                                  data-bv-message="This value is not valid"
+                                  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                                  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                                  data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="Name">姓名</label>
+                                                <input class="form-control input-sm" id="Name" name="Name" data-field="Name" type="text" placeholder="" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="Sex">性别</label>
+                                                <select class="form-control input-sm" id="Sex" name="Sex" data-field="Sex"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="Birth">出生日期</label>
+                                                <input class="form-control input-sm input-date" id="Birth" name="Birth" data-field="Birth" type="text" placeholder="" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" data-date-orientation="top auto" data-date-clear-btn="true" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="Age">年龄</label>
+                                                <input class="form-control input-sm" id="Age" name="Age" data-field="Age" type="text" placeholder="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-daterange" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" data-date-orientation="top auto" data-date-clear-btn="true">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label" for="DateStart">开始日期</label>
+                                                    <input class="form-control input-sm" id="DateStart" name="DateStart" data-field="DateStart" type="text" placeholder="" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="control-label" for="DateEnd">结束日期</label>
+                                                    <input class="form-control input-sm" id="DateEnd" name="DateEnd" data-field="DateEnd" type="text" placeholder="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="District">区域</label>
+                                                <div class="form-group">
+                                                    <div class="ztree_dropdown" id="District"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="CurrDistrict">当前区域</label>
+                                                <div class="form-group">
+                                                    <div class="ztree_dropdown" id="CurrDistrict"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label" for="Memo">描述</label>
+                                                <textarea class="form-control input-sm" id="Memo" name="Memo" data-field="Memo" placeholder="" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" id="IsValid" name="IsValid" data-field="IsValid"> 是否有效
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-sm cancel" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</button>
+                            <button type="submit" class="btn btn-primary btn-sm save"><i class="fa fa-save"></i> 保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- js -->
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//cdn.bootcss.com/datatables/1.10.8/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.bootcss.com/datatables/1.10.8/js/dataTables.bootstrap.min.js"></script>
+    <script src="js/xy.datatables.js"></script>
+    <script src="js/bootstrap-datepicker-xy.js"></script><!-- 临时修改：https://github.com/eternicode/bootstrap-datepicker/pull/1488  -->
+    <script src="//cdn.bootcss.com/bootstrap-datepicker/1.4.0/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+    <script src="js/bootstrapValidator.js"></script>
+    <script src="js/zTree/jquery.ztree.all-3.5.min.js"></script>
+    <script src="js/xy.ztree.js"></script>
+    <script>
+
+        $(function () {
+
+            $("#btn_search").click(function () {
+
+                // 性别下拉
+                $("#Sex").html(String()
+                    + "<option value=''>请选择...</option>"
+                    + "<option value='male'>男</option>"
+                    + "<option value='female'>女</option>");
+
+                // 日期编辑框变化触发验证
+                $("#Birth, #DateStart, #DateEnd").change(function () {
+                    $(this).triggerHandler("input");
+                });
+
+                // 区域下拉
+                var zNodes = [
+                    { id: 1, pId: -1, name: "深圳市", checked: false },
+                    { id: 2, pId: 1, name: "罗湖区", checked: false },
+                    { id: 3, pId: 1, name: "福田区", checked: false },
+                    { id: 4, pId: 1, name: "南山区", checked: false },
+                    { id: 5, pId: 1, name: "盐田区", checked: false },
+                    { id: 6, pId: 1, name: "宝安区", checked: false },
+                    { id: 7, pId: 1, name: "龙岗区", checked: false },
+                ];
+                new xy.ztree.dropdown({
+                    domId: "District",
+                    zNodes: zNodes,
+                    checkEnable: true,
+                }).init();
+                var treeObj = $.fn.zTree.getZTreeObj("ztree_District");
+                treeObj.expandAll(true);
+
+                // 当前区域下拉
+                var zNodes_Curr = [
+                    { id: "", pId: -1, name: "请选择...", checked: false },
+                    { id: 1, pId: -1, name: "深圳市", checked: false },
+                    { id: 2, pId: 1, name: "罗湖区", checked: false },
+                    { id: 3, pId: 1, name: "福田区", checked: false },
+                    { id: 4, pId: 1, name: "南山区", checked: false },
+                    { id: 5, pId: 1, name: "盐田区", checked: false },
+                    { id: 6, pId: 1, name: "宝安区", checked: false },
+                    { id: 7, pId: 1, name: "龙岗区", checked: false },
+                ];
+                new xy.ztree.dropdown({
+                    domId: "CurrDistrict",
+                    zNodes: zNodes_Curr,
+                }).init();
+                var treeObj_Curr = $.fn.zTree.getZTreeObj("ztree_CurrDistrict");
+                treeObj_Curr.expandAll(true);
+
+                // 验证声明
+                $("#form1").data('bootstrapValidator', null); // 重置，否则多次打开modal会出错
+                $("#form1").bootstrapValidator({
+                    submitHandler: function (validator, form, submitButton) {
+                        // Do nothing
+                    },
+                    fields: {
+                        Name: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入姓名"
+                                }
+                            }
+                        },
+                        Sex: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请选择性别"
+                                }
+                            }
+                        },
+                        District: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请选择区域"
+                                }
+                            }
+                        },
+                        CurrDistrict: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请选择当前区域"
+                                }
+                            }
+                        },
+                        Birth: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请选择出生日期"
+                                }
+                            }
+                        },
+                        Age: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入年龄"
+                                },
+                                integer: {
+                                    message: "年龄为整数"
+                                },
+                                between: {
+                                    min: 0,
+                                    max: 100,
+                                    message: "年龄范围：0-100"
+                                }
+                            }
+                        },
+                        DateStart: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请选择开始日期"
+                                }
+                            }
+                        },
+                        DateEnd: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请选择结束日期"
+                                }
+                            }
+                        },
+                    },
+                    excluded: [],
+                });
+
+                // dataTables
+                new xy.datatables({
+                    tableId: "table",
+                    btnAddId: "btn_add",
+                    modalId: "modal",
+                    optionDom: 'rt<"bottom"ip><"clear">',
+                    cols: [
+                        { display: "ID", fieldName: "ID", visible: false, key: true },
+                        { display: "姓名", fieldName: "Name", visible: true },
+                        {
+                            display: "性别", fieldName: "Sex", visible: true, render: function (data, type, row) {
+                                switch (data) {
+                                    case "male": return "男";
+                                    case "female": return "女";
+                                    default: return "";
+                                }
+                            }
+                        },
+                        { display: "出生日期", fieldName: "Birth", visible: true },
+                        { display: "年龄", fieldName: "Age", visible: true },
+                        { display: "开始日期", fieldName: "DateStart", visible: true },
+                        { display: "结束日期", fieldName: "DateEnd", visible: true },
+                        {
+                            display: "区域", fieldName: "District", visible: true, render: function (data, type, row) {
+                                var ret = "";
+                                if (data != null) {
+                                    var array = data.split(",");
+                                    for (var i = 0; i < array.length; i++) {
+                                        var id = array[i];
+                                        for (var j = 0; j < zNodes.length; j++) {
+                                            if (zNodes[j].id == id) {
+                                                ret += zNodes[j].name + ",";
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (array.length > 0)
+                                        ret = ret.substring(0, ret.length - 1);
+                                }
+                                return ret;
+                            }
+                        },
+                        {
+                            display: "当前区域", fieldName: "CurrDistrict", visible: true, render: function (data, type, row) {
+                                var ret = "";
+                                if (data != null) {
+                                    for (var i in zNodes_Curr) {
+                                        if (zNodes_Curr[i].id == data)
+                                            ret = zNodes_Curr[i].name;
+                                    }
+                                }
+                                return ret;
+                            }
+                        },
+                        { display: "描述", fieldName: "Memo", visible: false },
+                        {
+                            display: "是否有效", fieldName: "IsValid", visible: true, render: function (data, type, row) {
+                                return data ? "是" : "否";
+                            }
+                        },
+                        { display: "", fieldName: null, action: "Edit", visible: true }
+                    ],
+                    ajax: {
+                        show: "server/ztree.ashx?Func=show" + "&date=" + new Date().getTime(), // 可以加其他查询条件
+                        add: "server/ztree.ashx?Func=add" + "&date=" + new Date().getTime(), // 若有key则无需加查询条件
+                        edit: "server/ztree.ashx?Func=edit" + "&date=" + new Date().getTime(), // 若有key则无需加查询条件
+                        delete: "server/ztree.ashx?Func=delete" + "&date=" + new Date().getTime(), // 若有key则无需加查询条件
+                    },
+                    fnModalInit: function () {
+                        $('#modal .input-date').datepicker('remove');
+                        $('#modal .input-daterange').datepicker('remove');  // 1.4.0 会报错，解决方案为 https://github.com/eternicode/bootstrap-datepicker/pull/1488
+
+                        return true;
+                    },
+                    fnModalShowing: function () {
+                        $('#modal .input-date').datepicker();
+                        $('#modal .input-daterange').datepicker();
+
+                        // 清空验证标签
+                        var bootstrapValidator = $("#form1").data('bootstrapValidator');
+                        bootstrapValidator.resetForm(false);
+
+                    },
+                    fnModalSubmitting: function () {
+                        var bootstrapValidator = $("#form1").data('bootstrapValidator')
+                        return bootstrapValidator.validate().isValid();
+                    },
+                    fnDrawn: function () {
+                    }
+                }).init();
+            });
+        })
+
+    </script>
+
+</body>
+</html>
