@@ -203,7 +203,20 @@
                 treeObj.expandAll(true);
 
                 // 当前区域下拉
-                var zNodes_Curr = [
+                var zNodes_HN = [
+                    { id: "", pId: -1, name: "请选择...", checked: false },
+                    { id: 1, pId: -1, name: "长沙市", checked: false },
+                    { id: 2, pId: 1, name: "芙蓉区", checked: false },
+                    { id: 3, pId: 1, name: "天心区", checked: false },
+                    { id: 4, pId: 1, name: "岳麓区", checked: false },
+                    { id: 5, pId: 1, name: "开福区", checked: false },
+                    { id: 6, pId: 1, name: "雨花区", checked: false },
+                    { id: 7, pId: 1, name: "望城区", checked: false },
+                    { id: 8, pId: 1, name: "浏阳市", checked: false },
+                    { id: 9, pId: 1, name: "长沙县", checked: false },
+                    { id: 10, pId: 1, name: "宁乡县", checked: false },
+                ];
+                var zNodes_SZ = [
                     { id: "", pId: -1, name: "请选择...", checked: false },
                     { id: 1, pId: -1, name: "深圳市", checked: false },
                     { id: 2, pId: 1, name: "罗湖区", checked: false },
@@ -213,87 +226,98 @@
                     { id: 6, pId: 1, name: "宝安区", checked: false },
                     { id: 7, pId: 1, name: "龙岗区", checked: false },
                 ];
-                new xy.ztree.dropdown({
-                    domId: "CurrDistrict",
-                    zNodes: zNodes_Curr,
-                }).init();
-                var treeObj_Curr = $.fn.zTree.getZTreeObj("ztree_CurrDistrict");
-                treeObj_Curr.expandAll(true);
+                $("#Sex").change(function () {
+                    var zNodes_Curr = $("#Sex").val() == "male" ? zNodes_HN : zNodes_SZ;
+                    new xy.ztree.dropdown({
+                        domId: "CurrDistrict",
+                        zNodes: zNodes_Curr,
+                    }).init();
+                    var treeObj_Curr = $.fn.zTree.getZTreeObj("ztree_CurrDistrict");
+                    treeObj_Curr.expandAll(true);
 
-                // 验证声明
-                $("#form1").data('bootstrapValidator', null); // 重置，否则多次打开modal会出错
-                $("#form1").bootstrapValidator({
-                    submitHandler: function (validator, form, submitButton) {
-                        // Do nothing
-                    },
-                    fields: {
-                        Name: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入姓名"
-                                }
-                            }
-                        },
-                        Sex: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请选择性别"
-                                }
-                            }
-                        },
-                        District: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请选择区域"
-                                }
-                            }
-                        },
-                        CurrDistrict: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请选择当前区域"
-                                }
-                            }
-                        },
-                        Birth: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请选择出生日期"
-                                }
-                            }
-                        },
-                        Age: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入年龄"
-                                },
-                                integer: {
-                                    message: "年龄为整数"
-                                },
-                                between: {
-                                    min: 0,
-                                    max: 100,
-                                    message: "年龄范围：0-100"
-                                }
-                            }
-                        },
-                        DateStart: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请选择开始日期"
-                                }
-                            }
-                        },
-                        DateEnd: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请选择结束日期"
-                                }
-                            }
-                        },
-                    },
-                    excluded: [],
+                    bootstrapValidatorInit();
                 });
+
+                // 验证
+                function bootstrapValidatorInit() {
+                    $("#form1").data('bootstrapValidator', null);
+                    $("#form1 [name], [data-bv-field]").each(function () {
+                        $(this).closest(".has-feedback").find("small, .form-control-feedback").remove();
+                    });
+                    $("#form1").bootstrapValidator({
+                        submitHandler: function (validator, form, submitButton) {
+                            // Do nothing
+                        },
+                        fields: {
+                            Name: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "请输入姓名"
+                                    }
+                                }
+                            },
+                            Sex: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "请选择性别"
+                                    }
+                                }
+                            },
+                            District: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "请选择区域"
+                                    }
+                                }
+                            },
+                            CurrDistrict: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "请选择当前区域"
+                                    }
+                                }
+                            },
+                            Birth: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "请选择出生日期"
+                                    }
+                                }
+                            },
+                            Age: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "请输入年龄"
+                                    },
+                                    integer: {
+                                        message: "年龄为整数"
+                                    },
+                                    between: {
+                                        min: 0,
+                                        max: 100,
+                                        message: "年龄范围：0-100"
+                                    }
+                                }
+                            },
+                            DateStart: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "请选择开始日期"
+                                    }
+                                }
+                            },
+                            DateEnd: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "请选择结束日期"
+                                    }
+                                }
+                            },
+                        },
+                        excluded: [],
+                    });
+                }
+                bootstrapValidatorInit();
 
                 // dataTables
                 new xy.datatables({
@@ -304,57 +328,50 @@
                     cols: [
                         { display: "ID", fieldName: "ID", visible: false, key: true },
                         { display: "姓名", fieldName: "Name", visible: true },
-                        {
-                            display: "性别", fieldName: "Sex", visible: true, render: function (data, type, row) {
-                                switch (data) {
-                                    case "male": return "男";
-                                    case "female": return "女";
-                                    default: return "";
-                                }
+                        { display: "性别", fieldName: "Sex", visible: true, render: function (data, type, row) {
+                            switch (data) {
+                                case "male": return "男";
+                                case "female": return "女";
+                                default: return "";
                             }
-                        },
+                        } },
                         { display: "出生日期", fieldName: "Birth", visible: true },
                         { display: "年龄", fieldName: "Age", visible: true },
                         { display: "开始日期", fieldName: "DateStart", visible: true },
                         { display: "结束日期", fieldName: "DateEnd", visible: true },
-                        {
-                            display: "区域", fieldName: "District", visible: true, render: function (data, type, row) {
-                                var ret = "";
-                                if (data != null) {
-                                    var array = data.split(",");
-                                    for (var i = 0; i < array.length; i++) {
-                                        var id = array[i];
-                                        for (var j = 0; j < zNodes.length; j++) {
-                                            if (zNodes[j].id == id) {
-                                                ret += zNodes[j].name + ",";
-                                                break;
-                                            }
+                        { display: "区域", fieldName: "District", visible: true, render: function (data, type, row) {
+                            var ret = "";
+                            if (data != null) {
+                                var array = data.split(",");
+                                for (var i = 0; i < array.length; i++) {
+                                    var id = array[i];
+                                    for (var j = 0; j < zNodes.length; j++) {
+                                        if (zNodes[j].id == id) {
+                                            ret += zNodes[j].name + ",";
+                                            break;
                                         }
                                     }
-                                    if (array.length > 0)
-                                        ret = ret.substring(0, ret.length - 1);
                                 }
-                                return ret;
+                                if (array.length > 0)
+                                    ret = ret.substring(0, ret.length - 1);
                             }
-                        },
-                        {
-                            display: "当前区域", fieldName: "CurrDistrict", visible: true, render: function (data, type, row) {
-                                var ret = "";
-                                if (data != null) {
-                                    for (var i in zNodes_Curr) {
-                                        if (zNodes_Curr[i].id == data)
-                                            ret = zNodes_Curr[i].name;
-                                    }
+                            return ret;
+                        } },
+                        { display: "当前区域", fieldName: "CurrDistrict", visible: true, render: function (data, type, row) {
+                            var ret = "";
+                            if (data != null) {
+                                var zNodes_Curr = row.Sex == "male" ? zNodes_HN : zNodes_SZ;
+                                for (var i in zNodes_Curr) {
+                                    if (zNodes_Curr[i].id == data)
+                                        ret = zNodes_Curr[i].name;
                                 }
-                                return ret;
                             }
-                        },
+                            return ret;
+                        } },
                         { display: "描述", fieldName: "Memo", visible: false },
-                        {
-                            display: "是否有效", fieldName: "IsValid", visible: true, render: function (data, type, row) {
-                                return data ? "是" : "否";
-                            }
-                        },
+                        { display: "是否有效", fieldName: "IsValid", visible: true, render: function (data, type, row) {
+                            return data ? "是" : "否";
+                        } },
                         { display: "", fieldName: null, action: "Edit", visible: true }
                     ],
                     ajax: {

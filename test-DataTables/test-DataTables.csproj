@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="7-i18n.html" />
+    <Content Include="8-search.html" />
     <Content Include="js\i18next-1.10.1.js" />
     <Content Include="js\i18next-1.10.1.min.js" />
     <Content Include="packages.config" />
