@@ -193,7 +193,7 @@
                     { display: "性别", fieldName: "Sex", visible: true, render: function (data, type, row) {
                         switch (data) {
                             case "male": return "男";
-                            case "female": return "女";
+                            case "female": return "<strong class='text-danger'>女</strong>";
                             default: return "";
                         }
                     } },
@@ -237,6 +237,18 @@
                 },
                 fnDrawn: function () {
                     var oTable = $('#table').DataTable();
+
+                    if (!$("#table tbody tr td:eq(0)").hasClass("dataTables_empty")) {// 排除正在加载
+                        $("#table tbody tr").each(function () {
+                            var tr_dom = $(this)[0];
+                            var row_data = oTable.row(tr_dom).data();
+                            if (row_data.Age >= 60)
+                                $(this).addClass("warning");
+                            else
+                                $(this).removeClass("warning");
+                        })
+                    }
+
                     $("#table a.start").off("click").click(function () {
                         var tr_dom = $(this).closest("tr")[0];
                         var row_data = oTable.row(tr_dom).data();

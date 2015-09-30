@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v15.0828.1606)
+ * xy.datatables.js (v15.0903.1103)
  * ========================================================= */
 
 /**
@@ -9,9 +9,15 @@
  * @description: 各种参数设置
  *
  * @param {string} option.tableId：表的domID（必填）
- * @param {string} option.btnAddId："新增"按钮的domID（必填）
- * @param {string} option.btnDelId："删除"按钮的domID
- * @param {string} option.modalId："新增/编辑modal"的domID（必填）
+
+ * @param {object} option.ajax：ajax操作的url（和data二选一）
+ * @param -- {string} option.show：查询的url（常用）
+ * @param -- {string} option.add：新增的url（若有key则无需加查询条件）
+ * @param -- {string} option.edit：编辑的url（若有key则无需加查询条件）
+ * @param -- {string} option.delete：删除的url（若有key则无需加查询条件）
+
+ * @param {array} option.data：数据（常用于简单查询）（和ajax二选一）
+
  * @param {array} option.cols：列属性（必填）
  * @param -- {string} option.cols[x].display：字段th显示的文字（常用）
  * @param -- {string} option.cols[x].fieldName：字段fieldname（常用）
@@ -27,9 +33,15 @@
  * @param -- {boolean} option.cols[x].add：本列在modal方式新增时是否可见（缺省可见）
  * @param -- {boolean} option.cols[x].edit：本列在modal方式编辑时是否可见（缺省可见）
  * @param -- {string} option.cols[x].CustomHtml: 自定义DOM
+
+ * @param {string} option.btnAddId："新增"按钮的domID（常用）
+ * @param {string} option.btnDelId："删除"按钮的domID
+ * @param {string} option.modalId："新增/编辑modal"的domID（常用）
+
  * @param {string} option.pageLength：初始显示条数（缺省15）
  * @param {string} option.order：初始排序列号（datatables-option-order）（eg：[[3, "desc"]] 第三列降序）
  * @param {string} option.optionDom：datatables的布局样式（datatables-option-dom）
+
  * @param {callback} option.fnModalInit：数据写到modal前的callback
  * @param {callback} option.fnModalShowing：数据写到modal后执行的callback，时间在modal显示之前
  * @param {callback} option.fnModalSubmitting：modal提交前的callback，如果返回false会中止提交动作
@@ -59,7 +71,9 @@ xy.datatables = function (option) {
     this.btnDelId = option.btnDelId;
     this.modalId = option.modalId;
     this.cols = option.cols;
-    if (option.ajax)
+    if (option.data)
+        this.data = option.data;
+    else if (option.ajax)
         this.ajax = option.ajax; // 可以直接调用initBody时更新ajax
     this.order = option.order;
     this.optionDom = option.optionDom ? option.optionDom : "flt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>";//"lfrtip";
@@ -87,7 +101,7 @@ xy.datatables.prototype = (function () {
         // init all
         init: function () {
             this.initHead();
-            this.initBody(this.ajax);
+            this.initBody(this.ajax, this.data);
         },
         // init thead
         initHead: function () {
@@ -137,7 +151,7 @@ xy.datatables.prototype = (function () {
             var this_ = this;
 
             this_.ajax = ajax;
-            this_.data = data; // new
+            this_.data = data;
             this_.runDataTable(); // 执行 this_.oTable.DataTable 注意是 D，返回.api
 
             // add
@@ -195,7 +209,7 @@ xy.datatables.prototype = (function () {
                     columnDef.defaultContent = this_.btnEditDeleteHtml;
                 if (this_.cols[i].action == "CheckBox")
                     columnDef.defaultContent = this_.CheckBoxHtml;
-                if (this_.cols[i].action == "custom") // new
+                if (this_.cols[i].action == "custom")
                     columnDef.defaultContent = this_.cols[i].CustomHtml;
                 if (this_.cols[i].render != null)
                     columnDef.render = this_.cols[i].render;
@@ -260,20 +274,21 @@ xy.datatables.prototype = (function () {
                     });
                 }
             };
-            if (this_.ajax) {
-                dataTable_option.ajax = this_.ajax.show + "&date=" + new Date().getTime();
-            }
-            if (this_.data) { // new
+
+            if (this_.data) {
                 dataTable_option.data = this_.data;
+            }
+            else if (this_.ajax) {
+                dataTable_option.ajax = this_.ajax.show + "&date=" + new Date().getTime();
             }
 
             //Datatable Initiating
             this_.oTable = this_.$table
-                .on('xhr.dt', function (e, settings, json) { // new
+                .on('xhr.dt', function (e, settings, json) {
                     if (this_.fnDataLoaded)
                         this_.fnDataLoaded(settings, json);
                 })
-                .on('draw.dt', function (settings) { // new
+                .on('draw.dt', function (settings) {
                     if (this_.fnDrawn)
                         this_.fnDrawn(settings);
                 })
