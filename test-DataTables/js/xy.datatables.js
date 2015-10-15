@@ -101,7 +101,7 @@ xy.datatables.prototype = (function () {
         // init all
         init: function () {
             this.initHead();
-            this.initBody(this.ajax, this.data);
+            this.initBody();
         },
         // init thead
         initHead: function () {
@@ -150,8 +150,6 @@ xy.datatables.prototype = (function () {
         initBody: function (ajax, data) {
             var this_ = this;
 
-            this_.ajax = ajax;
-            this_.data = data;
             this_.runDataTable(); // 执行 this_.oTable.DataTable 注意是 D，返回.api
 
             // add
@@ -226,7 +224,7 @@ xy.datatables.prototype = (function () {
             {
                 "lengthMenu": [ // 每页显示条数
                     [10, 20, 100, -1], // 值
-                    [10, 20, 100, (this.i18n ? i18n.t("xydatetable.all") : "全部")] // 显示
+                    [10, 20, 100, (this.i18n ? this.i18n.t("xydatetable.all") : "全部")] // 显示
                 ],
                 "pageLength": this_.pageLength, // 默认显示条数
                 "dom": this_.optionDom,
@@ -375,7 +373,7 @@ xy.datatables.prototype = (function () {
                                 }
                             }
                             else {
-                                alert(i18n ? i18n.t(data.message) : data.message);
+                                alert(this.i18n ? this.i18n.t(data.message) : data.message);
                                 return;
                             }
                         }
@@ -440,7 +438,7 @@ xy.datatables.prototype = (function () {
         // delete
         delete: function (tr_dom) {
             var this_ = this;
-            if (confirm(this.i18n ? i18n.t("xydatetable.querydel") : "确定删除？") == false) {
+            if (confirm(this.i18n ? this.i18n.t("xydatetable.querydel") : "确定删除？") == false) {
                 return;
             }
 
@@ -484,9 +482,9 @@ xy.datatables.prototype = (function () {
                             else // 单行删除
                                 this_.oTable.row(tr_dom).remove().draw();
                                                         
-                            alert(this.i18n ? i18n.t("xydatetable.delsucc") : "删除成功");
+                            alert(this.i18n ? this.i18n.t("xydatetable.delsucc") : "删除成功");
                         } else {
-                            alert(this.i18n ? i18n.t(data.message) : data.message);
+                            alert(this.i18n ? this.i18n.t(data.message) : data.message);
                             return;
                         }
                     }
