@@ -99,7 +99,6 @@
     <Content Include="css\zTree\metroStyle\img\metro.png" />
     <Content Include="css\zTree\metroStyle\metroStyle.css" />
     <Content Include="js\bootstrapValidator.js" />
-    <Content Include="js\bootstrap-datepicker-xy.js" />
     <Content Include="js\__log.txt" />
     <Content Include="js\xy.datatables.js" />
     <Content Include="2-multi-delete.html" />

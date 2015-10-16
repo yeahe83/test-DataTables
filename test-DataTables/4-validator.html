@@ -9,7 +9,7 @@
     <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/datatables/1.10.8/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="//cdn.bootcss.com/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/bootstrap-datepicker/1.5.0-RC1/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <style>
         .modal .has-feedback .form-control {
             padding-right: 5px;
@@ -85,7 +85,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="input-daterange" data-date-format="yyyy-mm-dd" data-date-today-btn="true" data-date-language="zh-CN" data-date-orientation="top auto">
+                                        <div class="input-daterange" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" data-date-clear-btn="true">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label class="control-label" for="DateStart">开始日期</label>
@@ -137,8 +137,8 @@
     <script src="//cdn.bootcss.com/datatables/1.10.8/js/jquery.dataTables.min.js"></script>
     <script src="//cdn.bootcss.com/datatables/1.10.8/js/dataTables.bootstrap.min.js"></script>
     <script src="js/xy.datatables.js"></script>
-    <script src="js/bootstrap-datepicker-xy.js"></script><!-- 临时修改：https://github.com/eternicode/bootstrap-datepicker/pull/1488  -->
-    <script src="//cdn.bootcss.com/bootstrap-datepicker/1.4.0/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap-datepicker/1.5.0-RC1/js/bootstrap-datepicker.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap-datepicker/1.5.0-RC1/locales/bootstrap-datepicker.zh-CN.min.js"></script>
     <script src="js/bootstrapValidator.js"></script>
     <script>
 
@@ -215,15 +215,16 @@
                 },
                 fnModalInit: function () {
                     $('#modal .input-date').datepicker('remove');
-                    $('#modal .input-daterange').datepicker('remove');  // 1.4.0 会报错，解决方案为 https://github.com/eternicode/bootstrap-datepicker/pull/1488
-
-                    var bootstrapValidator = $("#form1").data('bootstrapValidator');
-                    bootstrapValidator.resetForm(true);
+                    $('#modal .input-daterange').datepicker('remove');
                     return true;
                 },
                 fnModalShowing: function () {
                     $('#modal .input-date').datepicker();
                     $('#modal .input-daterange').datepicker();
+
+                    // 清空验证标签
+                    var bootstrapValidator = $("#form1").data('bootstrapValidator');
+                    bootstrapValidator.resetForm(false);
                 },
                 fnModalSubmitting: function () {
                     var bootstrapValidator = $("#form1").data('bootstrapValidator')
