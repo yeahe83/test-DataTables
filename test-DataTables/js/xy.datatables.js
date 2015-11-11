@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v15.1105.1753)
+ * xy.datatables.js (v15.1110.1650)
  * ========================================================= */
 
 /**
@@ -130,7 +130,7 @@ xy.datatables.prototype = (function () {
                             + '<div class="col-sm-6">'
                                 + '<div class="form-group">'
                                     + '<label class="control-label">' + col.display + '</label>'
-                                    + '<input class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '" type="text" placeholder="" ' + (col.domId ? col.domId : "") + ' />'
+                                    + '<input class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '" type="text" placeholder="" ' + (col.domId ? ' id=' + col.domId : "") + ' />'
                                 + '</div>'
                             + '</div>';
                         break;
@@ -139,7 +139,7 @@ xy.datatables.prototype = (function () {
                             + '<div class="col-sm-12">'
                                 + '<div class="form-group">'
                                     + '<label class="control-label">' + col.display + '</label>'
-                                    + '<textarea class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '" placeholder="" rows="3"' + (col.domId ? col.domId : "") + '></textarea>'
+                                    + '<textarea class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '" placeholder="" rows="3"' + (col.domId ? ' id=' + col.domId : "") + '></textarea>'
                                 + '</div>'
                             + '</div>';
                         break;
@@ -148,7 +148,7 @@ xy.datatables.prototype = (function () {
                             + '<div class="col-sm-6">'
                                 + '<div class="form-group">'
                                     + '<label class="control-label">' + col.display + '</label>'
-                                    + '<select class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '"' + (col.domId ? col.domId : "") + '></select>'
+                                    + '<select class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '"' + (col.domId ? ' id=' + col.domId : "") + '></select>'
                                 + '</div>'
                             + '</div>';
                         break;
@@ -157,7 +157,7 @@ xy.datatables.prototype = (function () {
                             + '<div class="col-sm-6">'
                                 + '<div class="checkbox">'
                                     + '<label>'
-                                        + '<input type="checkbox" name="' + col.fieldName + '" data-field="' + col.fieldName + '"' + (col.domId ? col.domId : "") + '> ' + col.display
+                                        + '<input type="checkbox" name="' + col.fieldName + '" data-field="' + col.fieldName + '"' + (col.domId ? ' id=' + col.domId : "") + '> ' + col.display
                                     + '</label>'
                                 + '</div>'
                             + '</div>';
@@ -168,7 +168,7 @@ xy.datatables.prototype = (function () {
                                 + '<div class="form-group">'
                                     + '<label class="control-label">' + col.display + '</label>'
                                     + '<div class="form-group">'
-                                        + '<div class="ztree_dropdown" id=' + (col.domId ? col.domId : "") + '></div>'
+                                        + '<div class="ztree_dropdown"' + (col.domId ? ' id=' + col.domId : "") + '></div>'
                                     + '</div>'
                                 + '</div>'
                             + '</div>';
@@ -178,7 +178,7 @@ xy.datatables.prototype = (function () {
                             + '<div class="col-sm-6">'
                                 + '<div class="form-group">'
                                     + '<label class="control-label">' + col.display + '</label>'
-                                    + '<input class="form-control input-sm input-date" name="' + col.fieldName + '" data-field="' + col.fieldName + '" type="text" placeholder=""' + (col.domId ? col.domId : "") + ' />'
+                                    + '<input class="form-control input-sm input-date" name="' + col.fieldName + '" data-field="' + col.fieldName + '" type="text" placeholder=""' + (col.domId ? ' id=' + col.domId : "") + ' />'
                                 + '</div>'
                             + '</div>';
                         break;
@@ -194,7 +194,7 @@ xy.datatables.prototype = (function () {
                                             + '<div class="col-sm-6">'
                                                 + '<div class="form-group">'
                                                     + '<label class="control-label">' + col2.display + '</label>'
-                                                    + '<input class="form-control input-sm" name="' + col2.fieldName + '" data-field="' + col2.fieldName + '" type="text" placeholder="" ' + (col2.domId ? col2.domId : "") + '/>'
+                                                    + '<input class="form-control input-sm" name="' + col2.fieldName + '" data-field="' + col2.fieldName + '" type="text" placeholder="" ' + (col2.domId ? ' id=' + col2.domId : "") + '/>'
                                                 + '</div>'
                                             + '</div>';
                                         break;
@@ -209,7 +209,7 @@ xy.datatables.prototype = (function () {
                                     + '<div class="col-sm-6">'
                                         + '<div class="form-group">'
                                             + '<label class="control-label">' + col.display + '</label>'
-                                            + '<input class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '" type="text" placeholder=""' + (col.domId ? col.domId : "") + ' />'
+                                            + '<input class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '" type="text" placeholder=""' + (col.domId ? ' id=' + col.domId : "") + ' />'
                                         + '</div>'
                                     + '</div>'
                                     + end_row
@@ -540,10 +540,13 @@ xy.datatables.prototype = (function () {
 
             // 从表格读取数据
             var row_data;
-            if (tr_dom) // 编辑
+            if (tr_dom) {// 编辑
                 row_data = this_.oTable.row(tr_dom).data();
-            else // 新增
+                this_.$modal.find(".modal-title").text("编辑");
+            } else {// 新增
                 row_data = {};
+                this_.$modal.find(".modal-title").text("新增");
+            }
 
             // 数据写到界面前执行的callback
             if (this_.fnModalInit) {
@@ -553,7 +556,7 @@ xy.datatables.prototype = (function () {
             }
 
             // 加载数据
-            for (var index=0; index<this_.cols.length; index++) {
+            for (var index = 0; index < this_.cols.length; index++) {
                 var item = this_.cols[index];
 
                 var fieldName = this_.cols[index].fieldName;
@@ -638,7 +641,7 @@ xy.datatables.prototype = (function () {
                                 this_.oTable.rows('.selected').remove().draw();
                             else // 单行删除
                                 this_.oTable.row(tr_dom).remove().draw();
-                                                        
+
                             alert(this.i18n ? this.i18n.t("xydatetable.delsucc") : "删除成功");
                         } else {
                             alert(this.i18n ? this.i18n.t(data.message) : data.message);
