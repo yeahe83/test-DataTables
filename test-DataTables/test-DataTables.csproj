@@ -71,17 +71,28 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="0-simple-local.html" />
-    <Content Include="9-autocreate-modal.html" />
     <Content Include="7-i18n.html" />
     <Content Include="8-search.html" />
+    <Content Include="9-autocreate-modal.html" />
     <Content Include="css\bootstrap-datepicker\bootstrap-datepicker3.css" />
     <Content Include="css\bootstrap-datepicker\bootstrap-datepicker3.min.css" />
     <Content Include="css\bootstrap\bootstrap.min.css" />
     <Content Include="css\datatables\dataTables.bootstrap.css" />
     <Content Include="css\datatables\dataTables.bootstrap.min.css" />
     <Content Include="css\Font-Awesome\css\font-awesome.css" />
+    <Content Include="css\Font-Awesome\css\font-awesome.css.map" />
     <Content Include="css\Font-Awesome\css\font-awesome.min.css" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.eot" />
     <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="css\Font-Awesome\fonts\FontAwesome.otf" />
+    <Content Include="css\zTree\metroStyle\img\line_conn.png" />
+    <Content Include="css\zTree\metroStyle\img\loading.gif" />
+    <Content Include="css\zTree\metroStyle\img\metro.gif" />
+    <Content Include="css\zTree\metroStyle\img\metro.png" />
+    <Content Include="css\zTree\metroStyle\metroStyle.css" />
     <Content Include="js\bootstrap-datepicker\bootstrap-datepicker.js" />
     <Content Include="js\bootstrap-datepicker\bootstrap-datepicker.min.js" />
     <Content Include="js\bootstrap-datepicker\bootstrap-datepicker.zh-CN.min.js" />
@@ -101,12 +112,9 @@
     <Content Include="server\ztree.ashx" />
     <Content Include="locales\translation-zh-CN.json" />
     <Content Include="locales\translation-en.json" />
-    <Content Include="css\Font-Awesome\css\font-awesome.css.map" />
-    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.eot" />
-    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.ttf" />
-    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.woff" />
-    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.woff2" />
-    <Content Include="css\Font-Awesome\fonts\FontAwesome.otf" />
+    <Content Include="App_Data\datepicker.json" />
+    <Content Include="App_Data\simple.json" />
+    <Content Include="App_Data\ztree.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -119,11 +127,6 @@
     <Content Include="5-custom-buttons.html" />
     <Content Include="4-validator.html" />
     <Content Include="3-datepicker.html" />
-    <Content Include="css\zTree\metroStyle\img\line_conn.png" />
-    <Content Include="css\zTree\metroStyle\img\loading.gif" />
-    <Content Include="css\zTree\metroStyle\img\metro.gif" />
-    <Content Include="css\zTree\metroStyle\img\metro.png" />
-    <Content Include="css\zTree\metroStyle\metroStyle.css" />
     <Content Include="js\bootstrapValidator.js" />
     <Content Include="js\__log.txt" />
     <Content Include="js\xy.datatables.js" />
@@ -158,9 +161,7 @@
       <DependentUpon>ztree.ashx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
