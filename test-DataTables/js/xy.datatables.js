@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v15.0903.1103)
+ * xy.datatables.js (v15.1105.1753)
  * ========================================================= */
 
 /**
@@ -37,11 +37,14 @@
  * @param {string} option.btnAddId："新增"按钮的domID（常用）
  * @param {string} option.btnDelId："删除"按钮的domID
  * @param {string} option.modalId："新增/编辑modal"的domID（常用）
+ * @param {boolean} option.modalAutoCreated： 是否自动创建modal
+ * @param {boolean} option.formId： 自动创建modal的formId
 
  * @param {string} option.pageLength：初始显示条数（缺省15）
  * @param {string} option.order：初始排序列号（datatables-option-order）（eg：[[3, "desc"]] 第三列降序）
  * @param {string} option.optionDom：datatables的布局样式（datatables-option-dom）
 
+ * @param {callback} option.fnModalAutoCreated：自动创建modal后的callback，此时可以对编辑框进行初始化
  * @param {callback} option.fnModalInit：数据写到modal前的callback
  * @param {callback} option.fnModalShowing：数据写到modal后执行的callback，时间在modal显示之前
  * @param {callback} option.fnModalSubmitting：modal提交前的callback，如果返回false会中止提交动作
@@ -77,6 +80,7 @@ xy.datatables = function (option) {
         this.ajax = option.ajax; // 可以直接调用initBody时更新ajax
     this.order = option.order;
     this.optionDom = option.optionDom ? option.optionDom : "flt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>";//"lfrtip";
+    this.fnModalAutoCreated = option.fnModalAutoCreated; // new
     this.fnModalInit = option.fnModalInit;
     this.fnModalShowing = option.fnModalShowing;
     this.fnModalSubmitting = option.fnModalSubmitting;
@@ -85,6 +89,8 @@ xy.datatables = function (option) {
     this.fnDataLoaded = option.fnDataLoaded;
     this.fnDrawn = option.fnDrawn;
     this.i18n = option.i18n;
+    this.modalAutoCreated = option.modalAutoCreated; // new
+    this.formId = option.formId == undefined ? "form1" : option.formId; // new
 
     this.$table = $("#" + this.tableId);
     this.$btnAdd = $("#" + this.btnAddId);
@@ -102,6 +108,157 @@ xy.datatables.prototype = (function () {
         init: function () {
             this.initHead();
             this.initBody();
+            if (this.modalAutoCreated) // 是否自动创建modal
+                this.initModal();
+        },
+        // init modal --- new
+        initModal: function () {
+            var this_ = this;
+            var modalId = this.modalId;
+            var formId = this.formId;
+
+            if ($("#" + modalId).length > 0) // modal不重复创建
+                return;
+
+            // modal-rows
+            var modal_rows = "";
+            for (var i = 0; i < this_.cols.length; i++) {
+                var col = this_.cols[i];
+                switch (col.modalType) { // 有modalType属性的才创建编辑框
+                    case "text":
+                        modal_rows += String()
+                            + '<div class="col-sm-6">'
+                                + '<div class="form-group">'
+                                    + '<label class="control-label">' + col.display + '</label>'
+                                    + '<input class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '" type="text" placeholder="" ' + (col.domId ? col.domId : "") + ' />'
+                                + '</div>'
+                            + '</div>';
+                        break;
+                    case "memo":
+                        modal_rows += String()
+                            + '<div class="col-sm-12">'
+                                + '<div class="form-group">'
+                                    + '<label class="control-label">' + col.display + '</label>'
+                                    + '<textarea class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '" placeholder="" rows="3"' + (col.domId ? col.domId : "") + '></textarea>'
+                                + '</div>'
+                            + '</div>';
+                        break;
+                    case "select":
+                        modal_rows += String()
+                            + '<div class="col-sm-6">'
+                                + '<div class="form-group">'
+                                    + '<label class="control-label">' + col.display + '</label>'
+                                    + '<select class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '"' + (col.domId ? col.domId : "") + '></select>'
+                                + '</div>'
+                            + '</div>';
+                        break;
+                    case "checkbox":
+                        modal_rows += String()
+                            + '<div class="col-sm-6">'
+                                + '<div class="checkbox">'
+                                    + '<label>'
+                                        + '<input type="checkbox" name="' + col.fieldName + '" data-field="' + col.fieldName + '"' + (col.domId ? col.domId : "") + '> ' + col.display
+                                    + '</label>'
+                                + '</div>'
+                            + '</div>';
+                        break;
+                    case "ztree_dropdown":
+                        modal_rows += String()
+                            + '<div class="col-sm-6">'
+                                + '<div class="form-group">'
+                                    + '<label class="control-label">' + col.display + '</label>'
+                                    + '<div class="form-group">'
+                                        + '<div class="ztree_dropdown" id=' + (col.domId ? col.domId : "") + '></div>'
+                                    + '</div>'
+                                + '</div>'
+                            + '</div>';
+                        break;
+                    case "datepicker":
+                        modal_rows += String()
+                            + '<div class="col-sm-6">'
+                                + '<div class="form-group">'
+                                    + '<label class="control-label">' + col.display + '</label>'
+                                    + '<input class="form-control input-sm input-date" name="' + col.fieldName + '" data-field="' + col.fieldName + '" type="text" placeholder=""' + (col.domId ? col.domId : "") + ' />'
+                                + '</div>'
+                            + '</div>';
+                        break;
+                    case "datepicker-range":
+                        if (col.modalArgs.role == "begin") {
+                            // 找结束
+                            var end_row = "";
+                            for (var j = 0; j < this_.cols.length; j++) {
+                                var col2 = this_.cols[j];
+                                if (col2.modalType == "datepicker-range") { // 有modalType属性的才创建编辑框
+                                    if (col2.modalArgs.group == col.modalArgs.group && col2.modalArgs.role == "end") { // 是同一group的end
+                                        end_row += String()
+                                            + '<div class="col-sm-6">'
+                                                + '<div class="form-group">'
+                                                    + '<label class="control-label">' + col2.display + '</label>'
+                                                    + '<input class="form-control input-sm" name="' + col2.fieldName + '" data-field="' + col2.fieldName + '" type="text" placeholder="" ' + (col2.domId ? col2.domId : "") + '/>'
+                                                + '</div>'
+                                            + '</div>';
+                                        break;
+                                    }
+
+                                }
+                            }
+
+                            // 拼到开始
+                            modal_rows += String()
+                                + '<div class="input-daterange">'
+                                    + '<div class="col-sm-6">'
+                                        + '<div class="form-group">'
+                                            + '<label class="control-label">' + col.display + '</label>'
+                                            + '<input class="form-control input-sm" name="' + col.fieldName + '" data-field="' + col.fieldName + '" type="text" placeholder=""' + (col.domId ? col.domId : "") + ' />'
+                                        + '</div>'
+                                    + '</div>'
+                                    + end_row
+                                + '</div>';
+                        }
+                        break;
+                }
+            }
+
+            $("body").append(String()
+                + '<div id="' + modalId + '" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">'
+                    + '<div class="modal-dialog">'
+                        + '<div class="modal-content">'
+                            + '<div class="modal-header">'
+                                + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                                + '<h5 class="modal-title">编辑</h5>'
+                            + '</div>'
+                            + '<div class="modal-body">'
+                                + '<form id="' + formId + '" method="post" class="form-horizontal"'
+                                    + 'data-bv-message="This value is not valid"'
+                                    + 'data-bv-feedbackicons-valid="glyphicon glyphicon-ok"'
+                                    + 'data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"'
+                                    + 'data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">'
+
+                                    + '<div class="container-fluid modal-rows">'
+                                        + '<div class="row">'
+                                            + modal_rows
+                                        + '</div>'
+                                    + '</div>'
+
+                                + '</form>'
+
+                            + '</div>'
+                            + '<div class="modal-footer">'
+                                + '<button type="button" class="btn btn-default btn-sm cancel" data-dismiss="modal"><i class="fa fa-times"></i> 关闭</button>'
+                                + '<button type="submit" class="btn btn-primary btn-sm save"><i class="fa fa-save"></i> 保存</button>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>'
+                + '</div>');
+
+
+            // 更新 $modal
+            this_.$modal = $("#" + this.modalId);
+
+            // modal自动创建后的callback
+            if (this_.fnModalAutoCreated) {
+                this_.fnModalAutoCreated();
+            }
         },
         // init thead
         initHead: function () {

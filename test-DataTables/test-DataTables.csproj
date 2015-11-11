@@ -71,16 +71,42 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="0-simple-local.html" />
+    <Content Include="9-autocreate-modal.html" />
     <Content Include="7-i18n.html" />
     <Content Include="8-search.html" />
+    <Content Include="css\bootstrap-datepicker\bootstrap-datepicker3.css" />
+    <Content Include="css\bootstrap-datepicker\bootstrap-datepicker3.min.css" />
+    <Content Include="css\bootstrap\bootstrap.min.css" />
+    <Content Include="css\datatables\dataTables.bootstrap.css" />
+    <Content Include="css\datatables\dataTables.bootstrap.min.css" />
+    <Content Include="css\Font-Awesome\css\font-awesome.css" />
+    <Content Include="css\Font-Awesome\css\font-awesome.min.css" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="js\bootstrap-datepicker\bootstrap-datepicker.js" />
+    <Content Include="js\bootstrap-datepicker\bootstrap-datepicker.min.js" />
+    <Content Include="js\bootstrap-datepicker\bootstrap-datepicker.zh-CN.min.js" />
+    <Content Include="js\bootstrap\bootstrap.js" />
+    <Content Include="js\bootstrap\bootstrap.min.js" />
+    <Content Include="js\datatables\dataTables.bootstrap.js" />
+    <Content Include="js\datatables\dataTables.bootstrap.min.js" />
+    <Content Include="js\datatables\jquery.dataTables.js" />
+    <Content Include="js\datatables\jquery.dataTables.min.js" />
     <Content Include="js\i18next-1.10.1.js" />
     <Content Include="js\i18next-1.10.1.min.js" />
+    <Content Include="js\jquery\jquery-2.1.4.js" />
+    <Content Include="js\jquery\jquery-2.1.4.min.js" />
     <Content Include="packages.config" />
     <Content Include="server\simple.ashx" />
     <Content Include="server\datepicker.ashx" />
     <Content Include="server\ztree.ashx" />
     <Content Include="locales\translation-zh-CN.json" />
     <Content Include="locales\translation-en.json" />
+    <Content Include="css\Font-Awesome\css\font-awesome.css.map" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="css\Font-Awesome\fonts\FontAwesome.otf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -115,7 +141,9 @@
     <Content Include="js\zTree\jquery.ztree.exedit.js" />
     <Content Include="js\zTree\jquery.ztree.exhide-3.5.js" />
     <Content Include="js\zTree\jquery.ztree.exhide-3.5.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="helper.cs" />
