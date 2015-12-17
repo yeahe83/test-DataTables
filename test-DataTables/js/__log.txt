@@ -18,6 +18,7 @@ v15.0828.1606 // 修正重新打开modal时，编辑框保留了上次修改的�
 v15.0903.1103 // 修正新增修改失败时i18n报错，现在单独初始化tbody时无需传入ajax：new xy.datatables({...}).initBody()
 v15.1105.1753 // 新增自动创建modal相关
 v15.1110.1650 // 修正自动创建modal中domId的语法错误，修正新增或编辑modal的标题不变的问题
+v15.1215.0904 // 自动生成的checkbox改为col-sm-12，（未来考虑可以自定义col-sm-*）
 
 ---------------------------------------------------------
 xy.ztree.js
@@ -26,6 +27,8 @@ v15.0728.1734 // 对button类型的下拉有一些调整
 v15.0825.1500 // button方式的下拉改为自适应宽度且集成了style，加入参数ignoreHalf用于制定半勾的是否计入统计，修正初始化勾选错误的问题，缺省改为button作下拉框，添加空白缺省文字
 v15.0828.0848 // button方式支持bootstrapvalidator(勾选)
 v15.0828.0941 // button方式支持bootstrapvalidator(非勾选)
+v15.1214.1802 // 添加函数fnModifySetting，可以在提交前自定义setting
+v15.1216.1722 // ztree添加fnOnClick/fnOnCheck/fnModifySetting,ztree，dropdown添加fnModifySetting
 
 
 

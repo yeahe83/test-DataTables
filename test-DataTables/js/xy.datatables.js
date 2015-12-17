@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v15.1110.1650)
+ * xy.datatables.js (v15.1215.0904)
  * ========================================================= */
 
 /**
@@ -154,7 +154,7 @@ xy.datatables.prototype = (function () {
                         break;
                     case "checkbox":
                         modal_rows += String()
-                            + '<div class="col-sm-6">'
+                            + '<div class="col-sm-12">'
                                 + '<div class="checkbox">'
                                     + '<label>'
                                         + '<input type="checkbox" name="' + col.fieldName + '" data-field="' + col.fieldName + '"' + (col.domId ? ' id=' + col.domId : "") + '> ' + col.display

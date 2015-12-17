@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.ztree.js (v15.0828.0941)
+ * xy.ztree.js (v15.1216.1722)
  * ========================================================= */
 
 var xy;
@@ -29,6 +29,9 @@ if (!xy.ztree)
  * @param {boolean} option.pNodeSkin: 非叶节点的图标,
  * @param {callback} option.fnBeforeBindData：数据绑定前的callback，用于数据最后的处理
  * @param {callback} option.fnBeforeClick：数据点击前的callback，用于判断是否可以点击
+ * @param {callback} option.fnModifySetting：对setting进行自定义的callback
+ * @param {callback} option.fnOnClick：点击节点的callback
+ * @param {callback} option.fnOnCheck：勾选节点的callback
  *
  * @returns {object} this对象。
  *
@@ -64,8 +67,7 @@ if (!xy.ztree)
  *           }).init();
  *
  */
-xy.ztree = function(option)
-{
+xy.ztree = function (option) {
     this.domId = option.domId;
     this.checkEnable = option.checkEnable != undefined ? option.checkEnable : false
     this.url = option.url;
@@ -82,6 +84,8 @@ xy.ztree = function(option)
     this.fnBeforeBindData = option.fnBeforeBindData;
     this.fnBeforeClick = option.fnBeforeClick;
     this.fnOnClick = option.fnOnClick;
+    this.fnOnCheck = option.fnOnCheck;
+    this.fnModifySetting = option.fnModifySetting;
 
     this.$ztree = $("#" + this.domId);
 }
@@ -102,6 +106,8 @@ xy.ztree.prototype = (function () {
             };
 
             var onCheck = function (e, treeId, treeNode) {
+                if (this_.fnOnCheck)
+                    return this_.fnOnCheck(e, treeId, treeNode);
             };
 
             var setting = {
@@ -131,6 +137,11 @@ xy.ztree.prototype = (function () {
                     onCheck: onCheck
                 }
             };
+
+            // 对setting进行编辑
+            if (this_.fnModifySetting) {
+                this_.fnModifySetting(setting);
+            }
 
             //var zNodes = [
             //	{ id: 1, pId: 0, name: "北京" },
@@ -175,7 +186,7 @@ xy.ztree.prototype = (function () {
                                 for (var i in nodes) {
                                     nodes[i].iconSkin = nodes[i].isParent ? this_.pNodeSkin : this_.nodeSkin;
                                     treeObj.updateNode(nodes[i]);
-                                } 
+                                }
                             }
                         }
                     }
@@ -201,7 +212,7 @@ xy.ztree.prototype = (function () {
  * @param {string} option.fieldname：用于设置内部元件的名称，value存放于:hidden[name={fieldname}]（缺省使用domId）
  * @param {string} option.url：从ajax获取数据，url（和zNodes二者必填一项）
  * @param {string} option.zNodes：从zNodes直接获取数据（和url二者必填一项）
- * @param {boolean} option.ignoreHalf： 是否半勾节点不列入统计（缺省false）
+ * @param {boolean} option.ignoreHalf： 是否半勾节点不列入统计（缺省true）
  * @param {string} option.idKey：ztree的simpleData.idKey
  * @param {string} option.pIdKey：ztree的simpleData.pIdKey
  * @param {string} option.rootPId：ztree的simpleData.rootPId
@@ -217,6 +228,7 @@ xy.ztree.prototype = (function () {
  * @param {string} option.emptyText：空白时显示的文字（缺省：请选择...）
  * @param {callback} option.fnBeforeBindData：数据绑定前的callback，用于数据最后的处理
  * @param {callback} option.fnBeforeClick：数据点击前的callback，用于判断是否可以点击
+ * @param {callback} option.fnModifySetting：对setting进行自定义的callback
  *
  * @returns {object} this对象，可以调用init / getCheckedIds（需要已调用init）。
  *
@@ -234,8 +246,7 @@ xy.ztree.prototype = (function () {
  * 后续可使用  var treeObj = $.fn.zTree.getZTreeObj("ztree_{fieldname}"); 获取treeObj对象，继续进行api操作
  *
  */
-xy.ztree.dropdown = function (option)
-{
+xy.ztree.dropdown = function (option) {
     this.domId = option.domId;
     this.checkEnable = option.checkEnable != undefined ? option.checkEnable : false;
     this.fieldname = option.fieldname != undefined ? option.fieldname : this.domId;
@@ -258,6 +269,7 @@ xy.ztree.dropdown = function (option)
     this.modalId = option.modalId;
     this.fnBeforeBindData = option.fnBeforeBindData;
     this.fnBeforeClick = option.fnBeforeClick;
+    this.fnModifySetting = option.fnModifySetting;
 
     this.$container = $("#" + this.domId);
     this.$container.children().remove();
@@ -305,7 +317,7 @@ xy.ztree.dropdown = function (option)
     this.$content = $("#" + this.domId + " .menuContent");
     this.$ztree = this.style == "modal" ? $("#" + this.modalId + " .ztree") : $("#" + this.domId + " .ztree");
     this.$modal = $("#" + this.modalId);
-    
+
 }
 xy.ztree.dropdown.prototype = (function () {
     return {
@@ -417,7 +429,7 @@ xy.ztree.dropdown.prototype = (function () {
                     this_.$button.val(names); // bootstrapvalidator.js 判断的是value
                     this_.$button.change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
                 }
-                
+
                 hideMenu();
             };
 
@@ -462,7 +474,7 @@ xy.ztree.dropdown.prototype = (function () {
                     this_.val(names); // bootstrapvalidator.js 判断的是value
                     this_.change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
                 }
-                
+
             }
 
             var showMenu = function () {
@@ -526,6 +538,11 @@ xy.ztree.dropdown.prototype = (function () {
                     onCheck: onCheck
                 }
             };
+
+            // 对setting进行编辑
+            if (this_.fnModifySetting) {
+                this_.fnModifySetting(setting);
+            }
 
             //var zNodes = [
             //	{ id: 1, pId: 0, name: "北京" },

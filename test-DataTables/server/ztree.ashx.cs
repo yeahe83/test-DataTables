@@ -14,7 +14,7 @@ namespace test_DataTables.server
         public string Sex;
         public string Memo;
         public DateTime? Birth;
-        public int? Age;
+        public double? Age;
         public DateTime? DateStart;
         public DateTime? DateEnd;
         public string District;

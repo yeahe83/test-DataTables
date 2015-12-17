@@ -241,7 +241,7 @@
                 // 验证
                 function bootstrapValidatorInit() {
                     $("#form1").data('bootstrapValidator', null);
-                    $("#form1 [name], [data-bv-field]").each(function () {
+                    $("#form1 [name], #form1 [data-bv-field]").each(function () {
                         $(this).closest(".has-feedback").find("small, .form-control-feedback").remove();
                     });
                     $("#form1").bootstrapValidator({
