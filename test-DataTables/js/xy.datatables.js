@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v15.1215.0904)
+ * xy.datatables.js (v16.0126.1548)
  * ========================================================= */
 
 /**
@@ -98,7 +98,7 @@ xy.datatables = function (option) {
     this.$modal = $("#" + this.modalId);
 
     this.btnEditDeleteHtml = '<a href="#" class="btn btn-primary btn-xs edit"><i class="fa fa-edit"></i> ' + (this.i18n ? this.i18n.t("xydatetable.mod") : "编辑") + '</a> <a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-trash-o"></i> ' + (this.i18n ? this.i18n.t("xydatetable.del") : "删除") + '</a>';
-    this.CheckBoxHtml = '<label><input type="checkbox" /><span class="text"></span></label>';
+    this.CheckBoxHtml = '<div class="checkbox"><label><input type="checkbox" /><span class="text"></span></label></div>';
 
 }
 xy.datatables.prototype = (function () {
@@ -566,14 +566,14 @@ xy.datatables.prototype = (function () {
                     // 输入框可见性
                     if (tr_dom) { // 编辑 
                         if (this_.cols[index].edit == false || $input_dom.data("edit-disabled") == "1")
-                            $input_dom.closest(".form-group").hide();
+                            $input_dom.closest(".col-sm-6").hide();
                         else
-                            $input_dom.closest(".form-group").show();
+                            $input_dom.closest(".col-sm-6").show();
                     } else { // 新增 
                         if (this_.cols[index].add == false || $input_dom.data("add-disabled") == "1")
-                            $input_dom.closest(".form-group").hide();
+                            $input_dom.closest(".col-sm-6").hide();
                         else
-                            $input_dom.closest(".form-group").show();
+                            $input_dom.closest(".col-sm-6").show();
                     }
 
                     var value = row_data[fieldName];

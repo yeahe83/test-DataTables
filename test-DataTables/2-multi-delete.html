@@ -23,6 +23,7 @@
                     <div class="pull-right">
                         <button type="button" class="btn btn-sm btn-primary" id="btn_add"><i class="fa fa-plus"></i> 新增</button>
                         <button type="button" class="btn btn-sm btn-danger" id="btn_del"><i class="fa fa-trash-o"></i> 删除</button>
+                        <button type="button" class="btn btn-sm btn-info" id="btn_sel"><i class="fa fa-info"></i> 勾选列表</button>
                     </div>
                     <table class="table table-striped table-hover" id="table">
                         <thead></thead>
@@ -128,6 +129,19 @@
                     edit: "server/simple.ashx?Func=edit" + "&date=" + new Date().getTime(), // 若有key则无需加查询条件
                     delete: "server/simple.ashx?Func=delete" + "&date=" + new Date().getTime(), // 若有key则无需加查询条件
                 },
+                fnDrawn: function () { // 写到table之后的callback，显示之后的修改都写在这里
+                    if ($("#table tbody tr td:eq(0)").hasClass("dataTables_empty")) // 排除正在加载
+                        return;
+
+                    $("#btn_sel").click(function () {
+                        var ids = [];
+                        var oTable = $('#table').DataTable();
+                        var rows_data = oTable.rows(".selected").data();
+                        for (var i = 0; i < rows_data.length; i++)
+                            ids.push(rows_data[i].ID);
+                        alert(ids);
+                    });
+                }
             }).init();
 
 
