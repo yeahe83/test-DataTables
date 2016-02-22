@@ -30,8 +30,8 @@
  * @param -- {callback} option.cols[x].render：对表的数据进行重画（仅用于显示，不影响绑定值）（eg：参考 Role_UserInfo.js）
  * @param -- {string} option.cols[x].add_value：新增时缺省值（比如某些非编辑字段）
  * @param -- {string} option.cols[x].edit_value：编辑时缺省值（比如某些非编辑字段）
- * @param -- {boolean} option.cols[x].add：本列在modal方式新增时是否可见（缺省可见）
- * @param -- {boolean} option.cols[x].edit：本列在modal方式编辑时是否可见（缺省可见）
+ * @param -- {boolean} option.cols[x].add_visible：本列在modal方式新增时是否可见（缺省可见）
+ * @param -- {boolean} option.cols[x].edit_visible：本列在modal方式编辑时是否可见（缺省可见）
  * @param -- {string} option.cols[x].CustomHtml: 自定义DOM
 
  * @param {string} option.btnAddId："新增"按钮的domID（常用）
@@ -50,6 +50,7 @@
  * @param {callback} option.fnModalSubmitting：modal提交前的callback，如果返回false会中止提交动作
  * @param {callback} option.fnDataLoaded：获取数据之后和写到table之前的callback
  * @param {callback} option.fnDrawn：写到table之后的callback，显示之后的修改都写在这里
+ * @param {callback} option.fnfooterCallback：http://datatables.net/reference/option/footerCallback
  *
  * @return null
  *
@@ -80,7 +81,7 @@ xy.datatables = function (option) {
         this.ajax = option.ajax; // 可以直接调用initBody时更新ajax
     this.order = option.order;
     this.optionDom = option.optionDom ? option.optionDom : "flt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>";//"lfrtip";
-    this.fnModalAutoCreated = option.fnModalAutoCreated; // new
+    this.fnModalAutoCreated = option.fnModalAutoCreated;
     this.fnModalInit = option.fnModalInit;
     this.fnModalShowing = option.fnModalShowing;
     this.fnModalSubmitting = option.fnModalSubmitting;
@@ -88,9 +89,10 @@ xy.datatables = function (option) {
     this.pageLength = option.pageLength == undefined ? 15 : option.pageLength;
     this.fnDataLoaded = option.fnDataLoaded;
     this.fnDrawn = option.fnDrawn;
+    this.fnfooterCallback = option.fnfooterCallback;
     this.i18n = option.i18n;
-    this.modalAutoCreated = option.modalAutoCreated; // new
-    this.formId = option.formId == undefined ? "form1" : option.formId; // new
+    this.modalAutoCreated = option.modalAutoCreated;
+    this.formId = option.formId == undefined ? "form1" : option.formId;
 
     this.$table = $("#" + this.tableId);
     this.$btnAdd = $("#" + this.btnAddId);
@@ -111,14 +113,14 @@ xy.datatables.prototype = (function () {
             if (this.modalAutoCreated) // 是否自动创建modal
                 this.initModal();
         },
-        // init modal --- new
+        // init modal
         initModal: function () {
             var this_ = this;
             var modalId = this.modalId;
             var formId = this.formId;
 
             if ($("#" + modalId).length > 0) // modal不重复创建
-                return;
+                return this;
 
             // modal-rows
             var modal_rows = "";
@@ -252,13 +254,14 @@ xy.datatables.prototype = (function () {
                 + '</div>');
 
 
-            // 更新 $modal
             this_.$modal = $("#" + this.modalId);
 
             // modal自动创建后的callback
             if (this_.fnModalAutoCreated) {
                 this_.fnModalAutoCreated();
             }
+
+            return this;
         },
         // init thead
         initHead: function () {
@@ -302,6 +305,8 @@ xy.datatables.prototype = (function () {
                     $checkbox.closest("tr").removeClass('selected');
                 }
             });
+
+            return this;
         },
         // init tbody
         initBody: function (ajax, data) {
@@ -339,7 +344,7 @@ xy.datatables.prototype = (function () {
                 this_.delete(nRow);
             });
 
-
+            return this;
         },
         // core function
         runDataTable: function () {
@@ -427,6 +432,11 @@ xy.datatables.prototype = (function () {
                             }
                         }
                     });
+                },
+                "footerCallback": function (tfoot, data, start, end, display) {
+                    if (this_.fnfooterCallback) {
+                        return this_.fnfooterCallback(tfoot, data, start, end, display);
+                    }
                 }
             };
 
@@ -450,8 +460,19 @@ xy.datatables.prototype = (function () {
                 .DataTable(dataTable_option);
         },
         // add/edit
-        edit: function (tr_dom) {
+        edit: function (params) {
             var this_ = this;
+
+            var tr_dom;
+            if (params) {
+                if (params.tr_dom)
+                    tr_dom = params.tr_dom;
+                else
+                    tr_dom = params;
+            }
+
+            // 可拖动
+            this_.$modal.draggable({ cursor: "move" });  // 可拖动（需要jqueryui）
 
             // 取消
             this_.$modal.find(".cancel").unbind("click").click(function () {
@@ -470,7 +491,7 @@ xy.datatables.prototype = (function () {
 
                 // 提交前的callback
                 if (this_.fnModalSubmitting) {
-                    var ret = this_.fnModalSubmitting(row_data);
+                    var ret = this_.fnModalSubmitting(row_data, params);
                     if (!ret)
                         return;
                 }
@@ -479,7 +500,6 @@ xy.datatables.prototype = (function () {
                 for (var i = 0; i < this_.cols.length; i++) {
 
                     var fieldName = this_.cols[i].fieldName;
-                    //var $input_dom = this_.$modal.find("#" + fieldName);
                     var $input_dom = this_.$modal.find("[name=" + fieldName + "]"); // 改成读name
                     if (fieldName) {
 
@@ -522,10 +542,10 @@ xy.datatables.prototype = (function () {
                             if (data.result == true)  // 成功
                             {
                                 if (tr_dom) {// 编辑 
-                                    this_.oTable.row(tr_dom).data(data.item_data).draw(); // 保存到界面 
+                                    this_.oTable.row(tr_dom).data(data.item_data).draw(false); // 保存到界面 
                                     this_.$modal.modal("hide"); // 关闭弹出窗 
                                 } else { // 新增 
-                                    this_.oTable.row.add(data.item_data).draw(); // 新增到界面 
+                                    this_.oTable.row.add(data.item_data).draw(false); // 新增到界面 
                                     this_.$modal.modal("hide"); // 关闭弹出窗 
                                 }
                             }
@@ -548,33 +568,35 @@ xy.datatables.prototype = (function () {
                 this_.$modal.find(".modal-title").text("新增");
             }
 
+            // 输入框可见性
+            for (var index = 0; index < this_.cols.length; index++) {
+                var fieldName = this_.cols[index].fieldName;
+                var $input_dom = this_.$modal.find("[name=" + fieldName + "]"); // 改成读name
+                if (tr_dom) { // 编辑 
+                    if (this_.cols[index].edit_visible == false || this_.cols[index].edit == false || $input_dom.data("edit_visible") == "0")
+                        $input_dom.closest(".form-group").parent().hide();
+                    else
+                        $input_dom.closest(".form-group").parent().show();
+                } else { // 新增 
+                    if (this_.cols[index].add_visible == false || this_.cols[index].add == false || $input_dom.data("add_visible") == "0")
+                        $input_dom.closest(".form-group").parent().hide();
+                    else
+                        $input_dom.closest(".form-group").parent().show();
+                }
+            }
+
             // 数据写到界面前执行的callback
             if (this_.fnModalInit) {
-                var ret = this_.fnModalInit(row_data);
+                var ret = this_.fnModalInit(row_data, params);
                 if (!ret)
                     return;
             }
 
             // 加载数据
             for (var index = 0; index < this_.cols.length; index++) {
-                var item = this_.cols[index];
-
                 var fieldName = this_.cols[index].fieldName;
                 var $input_dom = this_.$modal.find("[name=" + fieldName + "]"); // 改成读name
                 if (fieldName && $input_dom.length > 0) {
-
-                    // 输入框可见性
-                    if (tr_dom) { // 编辑 
-                        if (this_.cols[index].edit == false || $input_dom.data("edit-disabled") == "1")
-                            $input_dom.closest(".col-sm-6").hide();
-                        else
-                            $input_dom.closest(".col-sm-6").show();
-                    } else { // 新增 
-                        if (this_.cols[index].add == false || $input_dom.data("add-disabled") == "1")
-                            $input_dom.closest(".col-sm-6").hide();
-                        else
-                            $input_dom.closest(".col-sm-6").show();
-                    }
 
                     var value = row_data[fieldName];
                     if ($input_dom.is("label") || $input_dom.is("span")) {
@@ -590,7 +612,7 @@ xy.datatables.prototype = (function () {
 
             // 数据写到界面后执行的callback
             if (this_.fnModalShowing) {
-                var ret = this_.fnModalShowing(row_data);
+                var ret = this_.fnModalShowing(row_data, params);
             }
 
             this_.$modal.modal();
@@ -638,9 +660,9 @@ xy.datatables.prototype = (function () {
                     if (data) {
                         if (data.result == true) { // 成功
                             if (tr_dom == "selected") // 多选删除
-                                this_.oTable.rows('.selected').remove().draw();
+                                this_.oTable.rows('.selected').remove().draw(false);
                             else // 单行删除
-                                this_.oTable.row(tr_dom).remove().draw();
+                                this_.oTable.row(tr_dom).remove().draw(false);
 
                             alert(this.i18n ? this.i18n.t("xydatetable.delsucc") : "删除成功");
                         } else {

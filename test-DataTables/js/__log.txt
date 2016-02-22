@@ -21,6 +21,55 @@ v15.1110.1650 // 修正自动创建modal中domId的语法错误，修正新增�
 v15.1215.0904 // 自动生成的checkbox改为col-sm-12，（未来考虑可以自定义col-sm-*）
 v15.1217.1739 // col[x].add/edit隐藏控件从.form-group改为.col-sm-6
 v16.0126.1548 // 修改勾选列样式
+v16.0217.1639 // modal现在可以拖动，需要jqueryui。
+              // 新增 footerCallback
+              // 新增可见和编辑可见改名add/edit=>add_visible/edit_visible。修正add_visible/edit_visible不能隐藏col-sm-12输入框的问题。
+			  // 现在可以使用链式初始化：new xy.datatables({...}).initHead().initBody().initModal()。
+			  // 增删改操作以后不再跳转到首页。
+			  // 修改显示/隐藏modal输入框代码的位置，以便fnModalInit中的自定义显示/隐藏不被重置。 eg见下方：
+			  // 现在可以从多个按钮新增/修改。eg见下方：edit1编辑field1和2，edit2编辑field3和4。
+
+					cols: [
+                        { display: "ID", fieldName: "ID", visible: false, key: true },
+
+                        { display: "field1", fieldName: "field1", modalType: "text" },
+                        { display: "field2", fieldName: "field2", modalType: "text" },
+
+                        { display: "field3", fieldName: "field3", modalType: "text", add_visible: false, edit_visible: false },
+                        { display: "field4", fieldName: "field4", modalType: "text", add_visible: false, edit_visible: false },
+
+                        {
+                            display: "", fieldName: null, action: "custom", CustomHtml:
+                              '<a href="#" class="btn btn-info btn-xs edit"><i class="fa fa-edit"></i>edit</a> ' +
+                              '<a href="#" class="btn btn-danger btn-xs delete"><i class="fa fa-trash-o"></i>delete</a> ' +
+                              '<a href="#" class="btn btn-warning btn-xs edit2"><i class="fa fa-commenting"></i>edit2</a> ' +
+                              ''
+                        }
+                    ],
+                    fnModalInit: function (row_data, params) { // 数据尚未写入
+                        $("#modal .input-date").datepicker("remove");
+                        $("#modal .input-daterange").datepicker("remove"); 
+
+                        if (params.source == "edit2") {
+                            $("#modal [name=field1]").closest(".form-group").parent().hide();
+                            $("#modal [name=field2]").closest(".form-group").parent().hide();
+
+                            $("#modal [name=field3]").closest(".form-group").parent().show();
+                            $("#modal [name=field4]").closest(".form-group").parent().show();
+                        }
+
+                        bootstrapValidatorInit(params.source == "edit2"); // 不同按钮验证不同的栏位
+
+                        return true;
+                    },
+					fnDrawn: function (settings) {
+                        // 点击“编辑2”按钮
+                        $("#table a.edit2").off("click").click(function (e) {
+                            e.preventDefault();
+                            var nRow = $(this).parents('tr')[0];
+                            d.edit({tr_dom: nRow, source: "edit2"});
+                        });
+                    }
 
 ---------------------------------------------------------
 xy.ztree.js
