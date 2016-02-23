@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v16.0126.1548)
+ * xy.datatables.js (v16.0223.1447)
  * ========================================================= */
 
 /**
@@ -405,7 +405,8 @@ xy.datatables.prototype = (function () {
                 },
                 "columnDefs": columnDefs,
                 "columns": columns,
-                "autoWidth": false, // 按当页的记录调宽就行了
+                //"autoWidth": false, // 按当页的记录调宽就行了
+                "scrollX": true,
                 "order": this_.order,
                 "rowCallback": function (row, data) {
 
@@ -472,7 +473,9 @@ xy.datatables.prototype = (function () {
             }
 
             // 可拖动
-            this_.$modal.draggable({ cursor: "move" });  // 可拖动（需要jqueryui）
+            try {
+                this_.$modal.draggable({ cursor: "move" });  // 可拖动（需要jqueryui）
+            } catch(e) {}
 
             // 取消
             this_.$modal.find(".cancel").unbind("click").click(function () {
