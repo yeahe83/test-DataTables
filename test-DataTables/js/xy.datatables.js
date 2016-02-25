@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v16.0223.1447)
+ * xy.datatables.js (v16.0225.1705)
  * ========================================================= */
 
 /**
@@ -43,6 +43,7 @@
  * @param {string} option.pageLength：初始显示条数（缺省15）
  * @param {string} option.order：初始排序列号（datatables-option-order）（eg：[[3, "desc"]] 第三列降序）
  * @param {string} option.optionDom：datatables的布局样式（datatables-option-dom）
+ * @param {string} option.options：其他option
 
  * @param {callback} option.fnModalAutoCreated：自动创建modal后的callback，此时可以对编辑框进行初始化
  * @param {callback} option.fnModalInit：数据写到modal前的callback
@@ -93,6 +94,7 @@ xy.datatables = function (option) {
     this.i18n = option.i18n;
     this.modalAutoCreated = option.modalAutoCreated;
     this.formId = option.formId == undefined ? "form1" : option.formId;
+    this.options_plus = option.options == undefined ? {} : option.options;
 
     this.$table = $("#" + this.tableId);
     this.$btnAdd = $("#" + this.btnAddId);
@@ -405,7 +407,6 @@ xy.datatables.prototype = (function () {
                 },
                 "columnDefs": columnDefs,
                 "columns": columns,
-                //"autoWidth": false, // 按当页的记录调宽就行了
                 "scrollX": true,
                 "order": this_.order,
                 "rowCallback": function (row, data) {
@@ -448,13 +449,18 @@ xy.datatables.prototype = (function () {
                 dataTable_option.ajax = this_.ajax.show + "&date=" + new Date().getTime();
             }
 
+            // other options
+            for (var i in this_.options_plus) {
+                dataTable_option[i] = this_.options_plus[i];
+            }
+
             //Datatable Initiating
             this_.oTable = this_.$table
-                .on('xhr.dt', function (e, settings, json) {
+                .off('xhr.dt').on('xhr.dt', function (e, settings, json) {
                     if (this_.fnDataLoaded)
                         this_.fnDataLoaded(settings, json);
                 })
-                .on('draw.dt', function (settings) {
+                .off('draw.dt').on('draw.dt', function (settings) {
                     if (this_.fnDrawn)
                         this_.fnDrawn(settings);
                 })
