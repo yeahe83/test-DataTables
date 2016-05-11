@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v16.0225.1705)
+ * xy.datatables.js (v16.0511.1042)
  * ========================================================= */
 
 /**
@@ -38,6 +38,7 @@
  * @param {string} option.btnDelId："删除"按钮的domID
  * @param {string} option.modalId："新增/编辑modal"的domID（常用）
  * @param {boolean} option.modalAutoCreated： 是否自动创建modal
+ * @param {boolean} option.modalDestroy： 是否每次都重新创建（缺省false）
  * @param {boolean} option.formId： 自动创建modal的formId
 
  * @param {string} option.pageLength：初始显示条数（缺省15）
@@ -81,7 +82,7 @@ xy.datatables = function (option) {
     else if (option.ajax)
         this.ajax = option.ajax; // 可以直接调用initBody时更新ajax
     this.order = option.order;
-    this.optionDom = option.optionDom ? option.optionDom : "flt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>";//"lfrtip";
+    this.optionDom = option.optionDom ? option.optionDom : "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>" //"flt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>";//"lfrtip";
     this.fnModalAutoCreated = option.fnModalAutoCreated;
     this.fnModalInit = option.fnModalInit;
     this.fnModalShowing = option.fnModalShowing;
@@ -93,6 +94,7 @@ xy.datatables = function (option) {
     this.fnfooterCallback = option.fnfooterCallback;
     this.i18n = option.i18n;
     this.modalAutoCreated = option.modalAutoCreated;
+    this.modalDestroy = option.modalDestroy ? option.modalDestroy : false;
     this.formId = option.formId == undefined ? "form1" : option.formId;
     this.options_plus = option.options == undefined ? {} : option.options;
 
@@ -121,8 +123,12 @@ xy.datatables.prototype = (function () {
             var modalId = this.modalId;
             var formId = this.formId;
 
-            if ($("#" + modalId).length > 0) // modal不重复创建
-                return this;
+            if ($("#" + modalId).length > 0) {
+                if (this_.modalDestroy)
+                    $("#" + modalId).remove();
+                else  // modal不重复创建
+                    return this;
+            }
 
             // modal-rows
             var modal_rows = "";
@@ -254,7 +260,6 @@ xy.datatables.prototype = (function () {
                         + '</div>'
                     + '</div>'
                 + '</div>');
-
 
             this_.$modal = $("#" + this.modalId);
 
@@ -407,7 +412,7 @@ xy.datatables.prototype = (function () {
                 },
                 "columnDefs": columnDefs,
                 "columns": columns,
-                "scrollX": true,
+                //"scrollX": true,
                 "order": this_.order,
                 "rowCallback": function (row, data) {
 
@@ -481,7 +486,7 @@ xy.datatables.prototype = (function () {
             // 可拖动
             try {
                 this_.$modal.draggable({ cursor: "move" });  // 可拖动（需要jqueryui）
-            } catch(e) {}
+            } catch (e) { }
 
             // 取消
             this_.$modal.find(".cancel").unbind("click").click(function () {
