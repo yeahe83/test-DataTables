@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v16.0511.1042)
+ * xy.datatables.js (v16.0709.1423)
  * ========================================================= */
 
 /**
@@ -45,7 +45,9 @@
  * @param {string} option.order：初始排序列号（datatables-option-order）（eg：[[3, "desc"]] 第三列降序）
  * @param {string} option.optionDom：datatables的布局样式（datatables-option-dom）
  * @param {string} option.options：其他option
+ * @param {boolean} option.destroy：是否每次查询都重新构建（缺省为true）。否则将通过.ajax.url().load()的方式加载数据（速度更快，但是ajax.show必须存在）
 
+ * @param {callback} option.fnModalSetValidator：设置验证器
  * @param {callback} option.fnModalAutoCreated：自动创建modal后的callback，此时可以对编辑框进行初始化
  * @param {callback} option.fnModalInit：数据写到modal前的callback
  * @param {callback} option.fnModalShowing：数据写到modal后执行的callback，时间在modal显示之前
@@ -83,6 +85,7 @@ xy.datatables = function (option) {
         this.ajax = option.ajax; // 可以直接调用initBody时更新ajax
     this.order = option.order;
     this.optionDom = option.optionDom ? option.optionDom : "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>" //"flt<'row DTTTFooter'<'col-sm-6'i><'col-sm-6'p>>";//"lfrtip";
+    this.fnModalSetValidator = option.fnModalSetValidator;
     this.fnModalAutoCreated = option.fnModalAutoCreated;
     this.fnModalInit = option.fnModalInit;
     this.fnModalShowing = option.fnModalShowing;
@@ -97,6 +100,7 @@ xy.datatables = function (option) {
     this.modalDestroy = option.modalDestroy ? option.modalDestroy : false;
     this.formId = option.formId == undefined ? "form1" : option.formId;
     this.options_plus = option.options == undefined ? {} : option.options;
+    this.destroy = option.destroy == undefined ? true : false;
 
     this.$table = $("#" + this.tableId);
     this.$btnAdd = $("#" + this.btnAddId);
@@ -277,8 +281,14 @@ xy.datatables.prototype = (function () {
             this_.$tbody = this_.$table.find("tbody");
             this_.$foot = this_.$table.find('tfoot');
 
+            // 不重新构建（使用 .ajax.url().load()加载数据），此时不应该改动thead
+            if (!this_.destroy && this_.ajax) {
+                if ($.fn.dataTable.isDataTable("#" + this_.tableId)) {  // 是否已经Database()过了
+                    return this_;
+                }
+            }
+
             // thead 清空和从 this_.cols[i].display 中读取
-            this_.$thead.children().remove();
             var thead_html = '<tr>';
             for (var i = 0; i < this_.cols.length; i++) {
                 var fieldname = (this_.cols[i].fieldName) ? this_.cols[i].fieldName : "";
@@ -292,13 +302,10 @@ xy.datatables.prototype = (function () {
                 thead_html += ('<th data-fieldname="' + fieldname + '" data-action="' + action + '">' + this_.cols[i].display + '</th>');
             }
             thead_html += '</tr>';
-            this_.$thead.append(thead_html);
-
-            // tfoot 清空
-            this_.$foot.children().remove();
+            this_.$thead.html(thead_html);
 
             // tbody 清空
-            this_.$tbody.children().remove();
+            this_.$tbody.empty();
 
             // checkbox的处理
             this_.$thead.find(":checkbox").click(function () {
@@ -313,7 +320,7 @@ xy.datatables.prototype = (function () {
                 }
             });
 
-            return this;
+            return this_;
         },
         // init tbody
         initBody: function (ajax, data) {
@@ -358,8 +365,15 @@ xy.datatables.prototype = (function () {
             var this_ = this;
 
             if ($.fn.dataTable.isDataTable("#" + this_.tableId)) {  // 是否已经Database()过了
-                this_.$table.DataTable().destroy(); // 销毁以便重新载入data
-                this_.$table.find("tbody").empty(); // 不清空依然会报 http://datatables.net/manual/tech-notes/3
+
+                if (!this_.destroy && this_.ajax) { // 不重新构建
+                    this_.$table.DataTable().ajax.url(this_.ajax.show).load();
+                    return;
+                }
+                else {
+                    this_.$table.DataTable().destroy(); // 销毁以便重新载入data
+                    this_.$table.find("tbody").empty(); // 不清空依然会报 http://datatables.net/manual/tech-notes/3
+                }
             }
 
             var columns = new Array;	// 绑定列
