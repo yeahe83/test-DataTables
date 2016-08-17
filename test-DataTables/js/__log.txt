@@ -88,6 +88,7 @@ v16.0225.1705 // 修正可能重复刷新的问题：加上.off('draw.dt').on。
 v16.0225.1705 // 1.修改缺省的dom格式。2.增加modalDestroy选项。3."scrollX": true 不再作为缺省，因为二次加载时，经过 this_.$table.DataTable().destroy() 一行时，<thead> 会被整体移除导致出错。
 v16.0630.1621 // 增加 fnModalSetValidator
 v16.0709.1423 // 增加 destory，查询可以不destory()直接从ajax.url().load()加载数据
+v16.0817.1553 // 1.修正读入时若select值为0时无法选中 2.修正destory:true下第二次加载时编辑和删除的错误
 
 备忘：
 1. <thead>

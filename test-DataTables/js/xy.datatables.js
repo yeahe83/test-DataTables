@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v16.0709.1423)
+ * xy.datatables.js (v16.0817.1553)
  * ========================================================= */
 
 /**
@@ -365,9 +365,9 @@ xy.datatables.prototype = (function () {
             var this_ = this;
 
             if ($.fn.dataTable.isDataTable("#" + this_.tableId)) {  // 是否已经Database()过了
-
                 if (!this_.destroy && this_.ajax) { // 不重新构建
-                    this_.$table.DataTable().ajax.url(this_.ajax.show).load();
+                    this_.oTable = this_.$table.DataTable();
+                    this_.oTable.ajax.url(this_.ajax.show).load();
                     return;
                 }
                 else {
@@ -566,7 +566,6 @@ xy.datatables.prototype = (function () {
                     async: false, // 同步
                     success: function (data) {
                         if (data) {
-
                             if (data.result == true)  // 成功
                             {
                                 if (tr_dom) {// 编辑 
@@ -628,10 +627,10 @@ xy.datatables.prototype = (function () {
 
                     var value = row_data[fieldName];
                     if ($input_dom.is("label") || $input_dom.is("span")) {
-                        $input_dom.text(value ? value : "").change();
+                        $input_dom.text(value == null ? "" : value).change();
                     }
                     else if ($input_dom.is(":text") || $input_dom.is("input[type=hidden]") || $input_dom.is("textarea") || $input_dom.is("select")) {
-                        $input_dom.val(value ? value : "").change();
+                        $input_dom.val(value == null ? "" : value).change();
                     } else if ($input_dom.is(":checkbox")) {
                         $input_dom.prop('checked', (value) ? true : false);
                     }
