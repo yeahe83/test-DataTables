@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v16.0817.1553)
+ * xy.datatables.js (v16.0818.1538)
  * ========================================================= */
 
 /**
@@ -46,6 +46,7 @@
  * @param {string} option.optionDom：datatables的布局样式（datatables-option-dom）
  * @param {string} option.options：其他option
  * @param {boolean} option.destroy：是否每次查询都重新构建（缺省为true）。否则将通过.ajax.url().load()的方式加载数据（速度更快，但是ajax.show必须存在）
+ * @param {boolean} option.postEncode: 是在modal提交时编码（缺省为false），若为true则后台需要解码
 
  * @param {callback} option.fnModalSetValidator：设置验证器
  * @param {callback} option.fnModalAutoCreated：自动创建modal后的callback，此时可以对编辑框进行初始化
@@ -101,6 +102,7 @@ xy.datatables = function (option) {
     this.formId = option.formId == undefined ? "form1" : option.formId;
     this.options_plus = option.options == undefined ? {} : option.options;
     this.destroy = option.destroy == undefined ? true : false;
+    this.postEncode = option.postEncode == undefined ? false : true;
 
     this.$table = $("#" + this.tableId);
     this.$btnAdd = $("#" + this.btnAddId);
@@ -184,6 +186,16 @@ xy.datatables.prototype = (function () {
                                     + '<div class="form-group">'
                                         + '<div class="ztree_dropdown"' + (col.domId ? ' id=' + col.domId : "") + '></div>'
                                     + '</div>'
+                                + '</div>'
+                            + '</div>';
+                        break;
+                    case "editor":
+                        modal_rows += String()
+                            + '<div class="col-sm-12">'
+                                + '<div class="form-group">'
+                                    + '<label class="control-label">' + col.display + '</label>'
+                                    + '<input type="text" class="hidden editor_hidden" name="' + col.fieldName + '" data-field="' + col.fieldName + '" value="" style="display:none;" /> '
+                                    + '<div class="editor" ' + (col.domId ? ' id=' + col.domId : "") + '></div>'
                                 + '</div>'
                             + '</div>';
                         break;
@@ -541,6 +553,15 @@ xy.datatables.prototype = (function () {
                         }
 
                         if ($input_dom.length > 0 && $input_dom.parent().is(":visible")) { // 界面上有编辑框的（用parent来判断是因为有本身是<hidden>元素的）
+
+                            // editor的数据写入hidden（如果有）
+                            if ($input_dom.hasClass("editor_hidden")) {
+                                try {
+                                    var markupStr = $input_dom.siblings(".editor").summernote('code');
+                                    $input_dom.val(markupStr);
+                                } catch (e) { }
+                            }
+
                             var value = null;
                             if ($input_dom.is("label") || $input_dom.is("span")) {
                                 continue; // label不需要赋值，还是处理一下，否则变成null
@@ -561,7 +582,10 @@ xy.datatables.prototype = (function () {
                 $.ajax({
                     type: "POST",
                     url: (tr_dom) ? this_.ajax.edit : this_.ajax.add, // url
-                    data: { "data": JSON.stringify(row_data) }, // 数据
+                    data: {
+                        data: (this_.postEncode ? encodeURIComponent(JSON.stringify(row_data)) : JSON.stringify(row_data)),
+                        postEncode: this_.postEncode
+                    }, // 数据
                     dataType: "json",
                     async: false, // 同步
                     success: function (data) {
@@ -612,6 +636,17 @@ xy.datatables.prototype = (function () {
                 }
             }
 
+            // editor初始化（如果有）
+            try {
+                $('.editor').summernote({
+                    height: 300,                 // set editor height
+                    minHeight: null,             // set minimum height of editor
+                    maxHeight: null,             // set maximum height of editor
+                    focus: true,                 // set focus to editable area after initializing summernote
+                    lang: 'zh-CN'                // default: 'en-US'
+                });
+            } catch (e) { }
+
             // 数据写到界面前执行的callback
             if (this_.fnModalInit) {
                 var ret = this_.fnModalInit(row_data, params);
@@ -633,6 +668,14 @@ xy.datatables.prototype = (function () {
                         $input_dom.val(value == null ? "" : value).change();
                     } else if ($input_dom.is(":checkbox")) {
                         $input_dom.prop('checked', (value) ? true : false);
+                    }
+
+                    // editor从hidden读入数据（如果有）
+                    if ($input_dom.hasClass("editor_hidden")) {
+                        var markupStr = $input_dom.val();
+                        try {
+                            $input_dom.siblings(".editor").summernote('code', markupStr);
+                        } catch (e) { }
                     }
                 }
             }

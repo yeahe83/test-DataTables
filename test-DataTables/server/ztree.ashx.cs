@@ -52,6 +52,8 @@ namespace test_DataTables.server
         {
             // 传入的数据
             string data = context.Request.Params["data"];
+            if (context.Request.Params["postEncode"] == "true")
+                data = context.Server.UrlDecode(data);
             Item_Ztree item = JsonConvert.DeserializeObject<Item_Ztree>(data);
 
             // 自增量
@@ -82,6 +84,8 @@ namespace test_DataTables.server
         {
             // 传入的数据
             string data = context.Request.Params["data"];
+            if (context.Request.Params["postEncode"] == "true")
+                data = context.Server.UrlDecode(data);
             Item_Ztree item = JsonConvert.DeserializeObject<Item_Ztree>(data);
 
             // 编辑

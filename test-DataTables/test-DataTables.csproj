@@ -105,11 +105,15 @@
     <Content Include="js\datatables\dataTables.fixedColumns.fix.js" />
     <Content Include="js\datatables\jquery.dataTables.js" />
     <Content Include="js\datatables\jquery.dataTables.min.js" />
+    <Content Include="css\editor\summernote.css" />
+    <Content Include="js\editor\summernote.js" />
+    <Content Include="js\editor\summernote.min.js" />
     <Content Include="js\i18next-1.10.1.js" />
     <Content Include="js\i18next-1.10.1.min.js" />
     <Content Include="js\jquery\jquery-2.1.4.js" />
     <Content Include="js\jquery\jquery-2.1.4.min.js" />
     <Content Include="packages.config" />
+    <Content Include="11-editor.html" />
     <Content Include="server\simple.ashx" />
     <Content Include="server\datepicker.ashx" />
     <Content Include="server\ztree.ashx" />
@@ -164,7 +168,9 @@
       <DependentUpon>ztree.ashx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="css\editor\font\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
