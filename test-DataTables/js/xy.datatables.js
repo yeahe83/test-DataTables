@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v16.0818.1538)
+ * xy.datatables.js (v16.0823.1803)
  * ========================================================= */
 
 /**
@@ -529,6 +529,19 @@ xy.datatables.prototype = (function () {
                 else // 新增
                     row_data = {};
 
+                // editor的数据写入hidden（如果有）
+                for (var i = 0; i < this_.cols.length; i++) {
+                    var fieldName = this_.cols[i].fieldName;
+                    var $input_dom = this_.$modal.find("[name=" + fieldName + "]"); // 改成读name
+
+                    if ($input_dom.hasClass("editor_hidden")) {
+                        try {
+                            var markupStr = $input_dom.siblings(".editor").summernote('code');
+                            $input_dom.val(markupStr);
+                        } catch (e) { }
+                    }
+                }
+
                 // 提交前的callback
                 if (this_.fnModalSubmitting) {
                     var ret = this_.fnModalSubmitting(row_data, params);
@@ -554,13 +567,13 @@ xy.datatables.prototype = (function () {
 
                         if ($input_dom.length > 0 && $input_dom.parent().is(":visible")) { // 界面上有编辑框的（用parent来判断是因为有本身是<hidden>元素的）
 
-                            // editor的数据写入hidden（如果有）
-                            if ($input_dom.hasClass("editor_hidden")) {
-                                try {
-                                    var markupStr = $input_dom.siblings(".editor").summernote('code');
-                                    $input_dom.val(markupStr);
-                                } catch (e) { }
-                            }
+                            //// editor的数据写入hidden（如果有）
+                            //if ($input_dom.hasClass("editor_hidden")) {
+                            //    try {
+                            //        var markupStr = $input_dom.siblings(".editor").summernote('code');
+                            //        $input_dom.val(markupStr);
+                            //    } catch (e) { }
+                            //}
 
                             var value = null;
                             if ($input_dom.is("label") || $input_dom.is("span")) {
