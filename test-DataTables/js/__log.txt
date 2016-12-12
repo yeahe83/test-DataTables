@@ -91,6 +91,7 @@ v16.0709.1423 // 增加 destory，查询可以不destory()直接从ajax.url().lo
 v16.0817.1553 // 1.修正读入时若select值为0时无法选中 2.修正destory:true下第二次加载时编辑和删除的错误
 v16.0818.1538 // 1.增加对editor的支持 2.增加属性postEncode用于编码
 v16.0823.1803 // editor已支持bootstrapvalidator
+v16.1212.1535 // 修正destroy、postEncode 无效的问题
 
 备忘：
 1. <thead>
@@ -122,6 +123,7 @@ v15.0828.0848 // button方式支持bootstrapvalidator(勾选)
 v15.0828.0941 // button方式支持bootstrapvalidator(非勾选)
 v15.1214.1802 // 添加函数fnModifySetting，可以在提交前自定义setting
 v15.1216.1722 // ztree添加fnOnClick/fnOnCheck/fnModifySetting,ztree，dropdown添加fnModifySetting
+v16.0929.1040 // ztree.dropdown添加fnOnClick/fnOnCheck
 
 
 

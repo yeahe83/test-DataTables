@@ -1,5 +1,13 @@
 ﻿/* =========================================================
- * xy.ztree.js (v15.1216.1722)
+ * xy.ztree.js (v16.0929.1040)
+ * 
+ * v15.0728.1734 // 对button类型的下拉有一些调整
+ * v15.0825.1500 // button方式的下拉改为自适应宽度且集成了style，加入参数ignoreHalf用于制定半勾的是否计入统计，修正初始化勾选错误的问题，缺省改为button作下拉框，添加空白缺省文字
+ * v15.0828.0848 // button方式支持bootstrapvalidator(勾选)
+ * v15.0828.0941 // button方式支持bootstrapvalidator(非勾选)
+ * v15.1214.1802 // 添加函数fnModifySetting，可以在提交前自定义setting
+ * v15.1216.1722 // ztree添加fnOnClick/fnOnCheck/fnModifySetting，ztree、ztree.dropdown添加fnModifySetting
+ * v16.0929.1040 // ztree.dropdown添加fnOnClick/fnOnCheck
  * ========================================================= */
 
 var xy;
@@ -207,7 +215,6 @@ xy.ztree.prototype = (function () {
  *
  * - 构造函数 -
  * @description: 初始化 xy.ztree.dropdown
- *
  * @param {string} option.domId：tree所在容器的domID（必填）
  * @param {string} option.fieldname：用于设置内部元件的名称，value存放于:hidden[name={fieldname}]（缺省使用domId）
  * @param {string} option.url：从ajax获取数据，url（和zNodes二者必填一项）
@@ -229,22 +236,53 @@ xy.ztree.prototype = (function () {
  * @param {callback} option.fnBeforeBindData：数据绑定前的callback，用于数据最后的处理
  * @param {callback} option.fnBeforeClick：数据点击前的callback，用于判断是否可以点击
  * @param {callback} option.fnModifySetting：对setting进行自定义的callback
- *
+ * @param {callback} option.fnOnClick：点击节点的callback（不要在option.fnModifySetting中直接覆盖callback.onClick）
+ * @param {callback} option.fnOnCheck：勾选节点的callback（不要在option.fnModifySetting中直接覆盖callback.onCheck）
  * @returns {object} this对象，可以调用init / getCheckedIds（需要已调用init）。
  *
  * - init -
  * @description: 载入数据
- *
  * @returns {object} ztree的treeObj对象，可以继续调用 api。
  *
  * - getCheckedIds -
  * @description: 获取当前选中（或勾选）的Id列表，也可以直接用 treeObj 调用 ztree 的函数获取
- *
  * @returns {string} 列表，eg: "1,2,3"
  *
  * - 备注 -
  * 后续可使用  var treeObj = $.fn.zTree.getZTreeObj("ztree_{fieldname}"); 获取treeObj对象，继续进行api操作
  *
+ * - 例子 -
+ * // html
+ * <div class="ztree_dropdown" id="sel"></div>
+ * 
+ * // json
+ * [{"id":"06","name":"洗精煤","value":"100840.22"},{"id":"09","name":"焦炭","value":"95384.96"},{"id":"12","name":"高炉煤气","value":"40503.59"},{"id":"01","name":"原煤","value":"33565.05"},{"id":"11","name":"焦炉煤气","value":"17063.82"},{"id":"13","name":"转炉煤气","value":"5764.98"},{"id":"33","name":"电力","value":"4582.40"},{"id":"32","name":"热力","value":"612.50"},{"id":"39","name":"其它燃料（空着）","value":"458.57"},{"id":"21","name":"柴油","value":"214.49"},{"id":"19","name":"汽油","value":"3.16"},{"id":"37","name":"余热余压","value":"2.29"}]
+ * 
+ * // js
+ * var treeObj = new xy.ztree.dropdown({
+ *      domId: "sel",
+ *      zNodes: data,
+ *      idKey: "id",
+ *      pIdKey: "pId",
+ *      keyName: "name",
+ *      rootPId: -1,
+ *      //
+ *      checkEnable: true, // 显示勾选框
+ *      fnCheck: function (event, treeId, treeNode) { // 勾选事件
+ *          alert($('#sel [name="sel"]').val());
+ *      }
+ *  }).init();
+ *
+ *  // 初始选中前5个节点
+ *  var array = [];
+ *  var nodes = treeObj.transformToArray(treeObj.getNodes());
+ *  $.each(nodes, function (index, element) {
+ *      array.push(element.name);
+ *      return index < 4; // false跳出
+ *  });
+ *  $('#sel [name="sel"]').val(array.join(",")).change();
+ * 
+ * 
  */
 xy.ztree.dropdown = function (option) {
     this.domId = option.domId;
@@ -269,6 +307,8 @@ xy.ztree.dropdown = function (option) {
     this.modalId = option.modalId;
     this.fnBeforeBindData = option.fnBeforeBindData;
     this.fnBeforeClick = option.fnBeforeClick;
+    this.fnOnClick = option.fnOnClick;
+    this.fnOnCheck = option.fnOnCheck;
     this.fnModifySetting = option.fnModifySetting;
 
     this.$container = $("#" + this.domId);
@@ -431,6 +471,9 @@ xy.ztree.dropdown.prototype = (function () {
                 }
 
                 hideMenu();
+
+                if (this_.fnOnClick)
+                    return this_.fnOnClick(e, treeId, treeNode);
             };
 
             // oncheck事件，写入hidden和text
@@ -475,6 +518,8 @@ xy.ztree.dropdown.prototype = (function () {
                     this_.change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
                 }
 
+                if (this_.fnOnCheck)
+                    return this_.fnOnCheck(e, treeId, treeNode);
             }
 
             var showMenu = function () {

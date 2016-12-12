@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v16.0823.1803)
+ * xy.datatables.js (v16.1212.1535)
  * ========================================================= */
 
 /**
@@ -101,8 +101,8 @@ xy.datatables = function (option) {
     this.modalDestroy = option.modalDestroy ? option.modalDestroy : false;
     this.formId = option.formId == undefined ? "form1" : option.formId;
     this.options_plus = option.options == undefined ? {} : option.options;
-    this.destroy = option.destroy == undefined ? true : false;
-    this.postEncode = option.postEncode == undefined ? false : true;
+    this.destroy = option.destroy == undefined ? true : option.destroy;
+    this.postEncode = option.postEncode == undefined ? false : option.postEncode;
 
     this.$table = $("#" + this.tableId);
     this.$btnAdd = $("#" + this.btnAddId);
