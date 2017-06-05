@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (v16.1212.1535)
+ * xy.datatables.js (v16.1221.1449)
  * ========================================================= */
 
 /**
@@ -337,6 +337,10 @@ xy.datatables.prototype = (function () {
         // init tbody
         initBody: function (ajax, data) {
             var this_ = this;
+            if (ajax) // v16.1221.1449
+                this_.ajax = ajax;
+            else if (data)
+                this_.data = data;
 
             this_.runDataTable(); // 执行 this_.oTable.DataTable 注意是 D，返回.api
 
@@ -703,9 +707,6 @@ xy.datatables.prototype = (function () {
         // delete
         delete: function (tr_dom) {
             var this_ = this;
-            if (confirm(this.i18n ? this.i18n.t("xydatetable.querydel") : "确定删除？") == false) {
-                return;
-            }
 
             // only for single key
             var key_fieldName = "";
@@ -718,10 +719,21 @@ xy.datatables.prototype = (function () {
 
             // get delete rows
             var rows_data = [];
-            if (tr_dom == "selected") // 多选删除
+            var msg = this.i18n ? this.i18n.t("xydatetable.querydel") : "确定删除？";
+            if (tr_dom == "selected") { // 多选删除
                 rows_data = this_.oTable.rows(".selected").data();
+                if (rows_data.length == 0) { // v16.1221.1449
+                    alert(this.i18n ? this.i18n.t("xydatetable.noselected") : "请选择要删除的项目");
+                    return;
+                }
+                msg += "（共" + rows_data.length + "行）"; // v16.1221.1449
+            }
             else // 单行删除
                 rows_data.push(this_.oTable.row(tr_dom).data());
+
+            if (confirm(msg) == false) {
+                return;
+            }
 
             // get delete ids
             var ids = new Array;
