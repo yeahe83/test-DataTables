@@ -92,6 +92,8 @@ v16.0817.1553 // 1.修正读入时若select值为0时无法选中 2.修正destor
 v16.0818.1538 // 1.增加对editor的支持 2.增加属性postEncode用于编码
 v16.0823.1803 // editor已支持bootstrapvalidator
 v16.1212.1535 // 修正destroy、postEncode 无效的问题
+v16.1221.1449 // 1.修正initBody(ajax)无效的问题 2.多选删除时提示
+v17.0605.1053 // 支持hidden类型的自动创建控件
 
 备忘：
 1. <thead>
