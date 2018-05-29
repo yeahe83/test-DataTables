@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.datatables.js (17.0605.1053)
+ * xy.datatables.js (v18.0529.1657)
  * ========================================================= */
 
 /**
@@ -78,6 +78,7 @@ xy.datatables = function (option) {
      * @param {callback} option.fnModalInit：数据写到modal前的callback
      * @param {callback} option.fnModalShowing：数据写到modal后，显示之前的callback
      * @param {callback} option.fnModalSubmitting：提交前的callback，如果返回false会中止提交动作
+     * @param {callback} option.fnModalSaveAllDone：保存（含删除）后的动作
      */
     this.btnAddId = option.btnAddId; // 新增按钮
     this.btnDelId = option.btnDelId; // 删除按钮（如果需要多选删除）
@@ -91,6 +92,7 @@ xy.datatables = function (option) {
     this.fnModalInit = option.fnModalInit;
     this.fnModalShowing = option.fnModalShowing;
     this.fnModalSubmitting = option.fnModalSubmitting;
+    this.fnModalSaveAllDone = option.fnModalSaveAllDone; // v18.0508.1749
 
     this.$table = $("#" + this.tableId);
     this.$btnAdd = $("#" + this.btnAddId);
@@ -479,8 +481,13 @@ xy.datatables.prototype = (function () {
             }
 
             // other options
-            for (var i in this_.options_plus) {
-                dataTable_option[i] = this_.options_plus[i];
+            // v18.0529.1657
+            for (var key in this_.options_plus) {
+                if (typeof this_.options_plus[key] === 'object' && this_.options_plus[key] !== null) {
+                    dataTable_option[key] = Object.assign(this_.options_plus[key], dataTable_option[key]);
+                } else {
+                    dataTable_option[key] = this_.options_plus[key];
+                }
             }
 
             //Datatable Initiating
@@ -615,6 +622,14 @@ xy.datatables.prototype = (function () {
                                 alert(this.i18n ? this.i18n.t(data.message) : data.message);
                                 return;
                             }
+                        }
+
+                        // 保存后执行的callback
+                        // v18.0529.1657
+                        if (this_.fnModalSaveAllDone) { // v18.0508.1749
+                            var ret = this_.fnModalSaveAllDone();
+                            if (!ret)
+                                return;
                         }
                     }
                 });
@@ -761,6 +776,14 @@ xy.datatables.prototype = (function () {
                     }
                     if (this_.$btnDel.length > 0)
                         this_.$btnDel[0].disabled = false;
+
+                    // 保存后执行的callback
+                    // v18.0529.1657
+                    if (this_.fnModalSaveAllDone) { // v18.0508.1749
+                        var ret = this_.fnModalSaveAllDone();
+                        if (!ret)
+                            return;
+                    }
                 }
             });
         },
