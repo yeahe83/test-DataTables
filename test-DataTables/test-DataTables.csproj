@@ -1,7 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D9C7AF15-1D1C-47E5-9A0F-F31D0C21867E}</ProjectGuid>
+    <ProjectGuid>{B680166A-9874-4BF2-BBDB-7ABF8F969434}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -17,6 +14,7 @@
     <AssemblyName>test-DataTables</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -24,7 +22,6 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
@@ -44,14 +42,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -72,8 +65,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="0-simple-local.html" />
+    <Content Include="1-simple.html" />
     <Content Include="10-fixed-columns.html" />
+    <Content Include="11-editor.html" />
     <Content Include="12-changeCols.html" />
+    <Content Include="13-dropdown.html" />
+    <Content Include="2-multi-delete.html" />
+    <Content Include="3-datepicker.html" />
+    <Content Include="4-validator.html" />
+    <Content Include="5-custom-buttons.html" />
+    <Content Include="6-ztree-dropdown.html" />
     <Content Include="7-i18n.html" />
     <Content Include="8-search.html" />
     <Content Include="9-autocreate-modal.html" />
@@ -83,15 +84,10 @@
     <Content Include="css\datatables\dataTables.bootstrap.css" />
     <Content Include="css\datatables\dataTables.bootstrap.min.css" />
     <Content Include="css\datatables\fixedColumns.bootstrap.min.css" />
+    <Content Include="css\editor\summernote.css" />
     <Content Include="css\Font-Awesome\css\font-awesome.css" />
-    <Content Include="css\Font-Awesome\css\font-awesome.css.map" />
     <Content Include="css\Font-Awesome\css\font-awesome.min.css" />
-    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.eot" />
     <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.svg" />
-    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.ttf" />
-    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.woff" />
-    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.woff2" />
-    <Content Include="css\Font-Awesome\fonts\FontAwesome.otf" />
     <Content Include="css\zTree\metroStyle\img\line_conn.png" />
     <Content Include="css\zTree\metroStyle\img\loading.gif" />
     <Content Include="css\zTree\metroStyle\img\metro.gif" />
@@ -100,6 +96,7 @@
     <Content Include="js\bootstrap-datepicker\bootstrap-datepicker.js" />
     <Content Include="js\bootstrap-datepicker\bootstrap-datepicker.min.js" />
     <Content Include="js\bootstrap-datepicker\bootstrap-datepicker.zh-CN.min.js" />
+    <Content Include="js\bootstrapValidator.js" />
     <Content Include="js\bootstrap\bootstrap.js" />
     <Content Include="js\bootstrap\bootstrap.min.js" />
     <Content Include="js\datatables\dataTables.bootstrap.js" />
@@ -107,40 +104,13 @@
     <Content Include="js\datatables\dataTables.fixedColumns.fix.js" />
     <Content Include="js\datatables\jquery.dataTables.js" />
     <Content Include="js\datatables\jquery.dataTables.min.js" />
-    <Content Include="css\editor\summernote.css" />
     <Content Include="js\editor\summernote.js" />
     <Content Include="js\editor\summernote.min.js" />
     <Content Include="js\i18next-1.10.1.js" />
     <Content Include="js\i18next-1.10.1.min.js" />
     <Content Include="js\jquery\jquery-2.1.4.js" />
     <Content Include="js\jquery\jquery-2.1.4.min.js" />
-    <Content Include="packages.config" />
-    <Content Include="11-editor.html" />
-    <Content Include="server\simple.ashx" />
-    <Content Include="server\datepicker.ashx" />
-    <Content Include="server\ztree.ashx" />
-    <Content Include="locales\translation-zh-CN.json" />
-    <Content Include="locales\translation-en.json" />
-    <Content Include="App_Data\datepicker.json" />
-    <Content Include="App_Data\simple.json" />
-    <Content Include="App_Data\ztree.json" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="6-ztree-dropdown.html" />
-    <Content Include="5-custom-buttons.html" />
-    <Content Include="4-validator.html" />
-    <Content Include="3-datepicker.html" />
-    <Content Include="js\bootstrapValidator.js" />
-    <Content Include="js\__log.txt" />
     <Content Include="js\xy.datatables.js" />
-    <Content Include="2-multi-delete.html" />
-    <Content Include="1-simple.html" />
     <Content Include="js\xy.ztree.js" />
     <Content Include="js\zTree\jquery.ztree.all-3.5.js" />
     <Content Include="js\zTree\jquery.ztree.all-3.5.min.js" />
@@ -153,9 +123,8 @@
     <Content Include="js\zTree\jquery.ztree.exedit.js" />
     <Content Include="js\zTree\jquery.ztree.exhide-3.5.js" />
     <Content Include="js\zTree\jquery.ztree.exhide-3.5.min.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="js\__log.txt" />
+    <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="helper.cs" />
@@ -171,7 +140,32 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="css\editor\font\" />
+    <Content Include="App_Data\datepicker.json" />
+    <Content Include="App_Data\simple.json" />
+    <Content Include="App_Data\ztree.json" />
+    <Content Include="css\editor\font\summernote.eot" />
+    <Content Include="css\editor\font\summernote.ttf" />
+    <Content Include="css\editor\font\summernote.woff" />
+    <Content Include="css\Font-Awesome\css\font-awesome.css.map" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="css\Font-Awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="css\Font-Awesome\fonts\FontAwesome.otf" />
+    <Content Include="locales\translation-en.json" />
+    <Content Include="locales\translation-zh-cn.json" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="server\datepicker.ashx" />
+    <Content Include="server\simple.ashx" />
+    <Content Include="server\ztree.ashx" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -186,7 +180,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>51007</DevelopmentServerPort>
+          <DevelopmentServerPort>63162</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:51007/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
@@ -198,13 +192,6 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>此项目引用这台计算机上缺少的 NuGet 程序包。使用 NuGet 程序包还原可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

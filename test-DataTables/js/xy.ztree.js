@@ -1,5 +1,5 @@
 ﻿/* =========================================================
- * xy.ztree.js (v17.0525.1425)
+ * xy.ztree.js (v18.0704.1758)
  * ========================================================= */
 
 var xy;
@@ -810,6 +810,7 @@ xy.ztree.prototype = (function () {
  * @param {string} option.url：从ajax获取数据，url（和zNodes二者必填一项）
  * @param {string} option.zNodes：从zNodes直接获取数据（和url二者必填一项）
  * @param {boolean} option.ignoreHalf： 是否半勾节点不列入统计（缺省true）
+ * @param {boolean} option.mergeChildren：如果子节点全部勾选，将只显示父节点（缺省false） v18.0704.1758
  * @param {string} option.idKey：ztree的simpleData.idKey
  * @param {string} option.pIdKey：ztree的simpleData.pIdKey
  * @param {string} option.rootPId：ztree的simpleData.rootPId
@@ -880,8 +881,8 @@ xy.ztree.dropdown = function (option) {
     this.fieldname = option.fieldname != undefined ? option.fieldname : this.domId;
     this.url = option.url;
     this.zNodes = option.zNodes;
-    this.ignoreHalf = option.ignoreHalf != undefined ? option.ignoreHalf : true; // new
-
+    this.ignoreHalf = option.ignoreHalf != undefined ? option.ignoreHalf : true;
+    this.mergeChildren = option.mergeChildren != undefined ? option.mergeChildren : false; // v18.0704.1758
     this.idKey = option.idKey != undefined ? option.idKey : "id";
     this.pIdKey = option.pIdKey != undefined ? option.pIdKey : "pId";
     this.rootPId = option.rootPId != undefined ? option.rootPId : null;
@@ -988,7 +989,7 @@ xy.ztree.dropdown.prototype = (function () {
                     var names = "";
                     var treeObj = $.fn.zTree.getZTreeObj(this_.$ztree[0].id);
                     //var nodes = treeObj.getNodes();
-                    var nodes = treeObj.transformToArray(treeObj.getNodes()); // new
+                    var nodes = treeObj.transformToArray(treeObj.getNodes());
                     for (var j = 0; j < array.length; j++) {
                         var id = array[j];
                         for (var i = 0, l = nodes.length; i < l; i++) {
@@ -1038,7 +1039,7 @@ xy.ztree.dropdown.prototype = (function () {
                 if (names.length > 0) names = names.substring(0, names.length - 1);
                 if (ids.length > 0) ids = ids.substring(0, ids.length - 1);
                 //this_.$hidden.val(ids); //.change(); // 再change就又触发事件了
-                this_.$hidden.val(ids).triggerHandler("input"); // new
+                this_.$hidden.val(ids).triggerHandler("input");
                 if (this_.style == "text") {
                     this_.$text.val(names).click().change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
                 } else if (this_.style == "button") {
@@ -1049,7 +1050,7 @@ xy.ztree.dropdown.prototype = (function () {
                     }
                     this_.$text.val(names); // bootstrapvalidator.js 判断的是value
                     //this_.$text.change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
-                    this_.$text.change(); // new
+                    this_.$text.change();
                 } else if (this_.style == "modal") {
                     if (names != "") {
                         this_.$button.text(names);
@@ -1075,8 +1076,12 @@ xy.ztree.dropdown.prototype = (function () {
                     names = "";
                 ids = "";
                 for (var i = 0, l = nodes.length; i < l; i++) {
-                    if (this_.ignoreHalf) { // new
+                    if (this_.ignoreHalf) {
                         if (nodes[i].getCheckStatus().half) // 半勾的不列入统计
+                            continue;
+                    }
+                    if (this_.mergeChildren) { // v18.0704.1758 如果子节点全部勾选，将只显示父节点
+                        if (nodes[i].getParentNode() && nodes[i].getParentNode().check_Child_State == "2")
                             continue;
                     }
                     names += nodes[i][this_.keyName] + ",";
@@ -1085,7 +1090,7 @@ xy.ztree.dropdown.prototype = (function () {
                 if (names.length > 0) names = names.substring(0, names.length - 1);
                 if (ids.length > 0) ids = ids.substring(0, ids.length - 1);
                 //this_.$hidden.val(ids); //.change();
-                this_.$hidden.val(ids).triggerHandler("input"); // new
+                this_.$hidden.val(ids).triggerHandler("input");
                 if (this_.style == "text") {
                     this_.$text.val(names).click().change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
                 }
@@ -1097,7 +1102,7 @@ xy.ztree.dropdown.prototype = (function () {
                     }
                     this_.$text.val(names);
                     //this_.$text.change().triggerHandler("input"); // bootstrapvalidator.js 要input事件触发验证
-                    this_.$text.change(); // new
+                    this_.$text.change();
                 } else if (this_.style == "modal") {
                     if (names != "") {
                         this_.$button.text(names);

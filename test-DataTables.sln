@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test-DataTables", "test-DataTables\test-DataTables.csproj", "{D9C7AF15-1D1C-47E5-9A0F-F31D0C21867E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test-DataTables", "test-DataTables\test-DataTables.csproj", "{B680166A-9874-4BF2-BBDB-7ABF8F969434}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D9C7AF15-1D1C-47E5-9A0F-F31D0C21867E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9C7AF15-1D1C-47E5-9A0F-F31D0C21867E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9C7AF15-1D1C-47E5-9A0F-F31D0C21867E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9C7AF15-1D1C-47E5-9A0F-F31D0C21867E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B680166A-9874-4BF2-BBDB-7ABF8F969434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B680166A-9874-4BF2-BBDB-7ABF8F969434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B680166A-9874-4BF2-BBDB-7ABF8F969434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B680166A-9874-4BF2-BBDB-7ABF8F969434}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB8732CC-4996-4A9F-B057-760967AB84B6}
 	EndGlobalSection
 EndGlobal
