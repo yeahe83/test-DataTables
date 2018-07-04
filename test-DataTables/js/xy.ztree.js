@@ -836,8 +836,18 @@ xy.ztree.prototype = (function () {
  * @returns {object} ztree的treeObj对象，可以继续调用 api。
  *
  * - getCheckedIds -
- * @description: 获取当前选中（或勾选）的Id列表，也可以直接用 treeObj 调用 ztree 的函数获取
+ * @description: 获取当前勾选的Id列表，也可以直接用 treeObj 调用 ztree 的函数获取
  * @returns {string} 列表，eg: "1,2,3"
+ * 
+ * - getSelectedId -
+ * @description: 获取当前选中的Id，也可以直接用 treeObj 调用 ztree 的函数获取
+ * @returns {string} 列表，eg: "1"
+ * 
+ * - setCheckedIds -
+ * @description: 获取当前勾选的Id列表
+ *
+ * - setSelectedId -
+ * @description: 设置选中的Id
  *
  * - 备注 -
  * 后续可使用  var treeObj = $.fn.zTree.getZTreeObj("ztree_{fieldname}"); 获取treeObj对象，继续进行api操作
@@ -889,12 +899,12 @@ xy.ztree.dropdown = function (option) {
     this.keyName = option.keyName != undefined ? option.keyName : "name";
     this.selectedMulti = option.selectedMulti != undefined ? option.selectedMulti : false;
     this.showLine = option.showLine != undefined ? option.showLine : true,
-        this.showIcon = option.showIcon != undefined ? option.showIcon : true,
-        this.nodeSkin = option.nodeSkin;
+    this.showIcon = option.showIcon != undefined ? option.showIcon : true,
+    this.nodeSkin = option.nodeSkin;
     this.pNodeSkin = option.pNodeSkin;
     this.mainWidth = option.mainWidth != undefined ? option.mainWidth : "160",
-        this.style = option.style != undefined ? option.style : "button", // 缺省是用:text做下拉框，可选为button做下拉框
-        this.emptyText = option.emptyText != undefined ? option.emptyText : "请选择...";
+    this.style = option.style != undefined ? option.style : "button", // 缺省是用:text做下拉框，可选为button做下拉框
+    this.emptyText = option.emptyText != undefined ? option.emptyText : "请选择...";
     this.modalId = option.modalId;
     this.fnBeforeBindData = option.fnBeforeBindData;
     this.fnBeforeClick = option.fnBeforeClick;
@@ -1253,6 +1263,15 @@ xy.ztree.dropdown.prototype = (function () {
         },
         getCheckedIds: function () {
             return this.$hidden.val();
+        },
+        getSelectedId: function () {
+            return this.$hidden.val();
+        },
+        setCheckedIds: function (ids) {
+            this.$hidden.val(ids).change();
+        },
+        setSelectedId: function (id) {
+            this.$hidden.val(id).change();
         }
     }
 })();

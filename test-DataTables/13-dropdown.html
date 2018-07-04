@@ -13,9 +13,9 @@
     <div class="row">
         <div class="col-sm-3">
             <div class="ztree_dropdown" id="ztree1"></div>
-        </div>
-        <div class="col-sm-3">
-            <button class="btn btn-sm btn-primary" id="btnGetValues">getValues</button>
+            <button class="btn btn-sm btn-primary" id="btnGetValues">getValues</button>=>
+            <input type="text" value="" id="tbxZtree1" />=>
+            <button class="btn btn-sm btn-primary" id="btnSetValues">setValues</button>
         </div>
     </div>
 
@@ -23,9 +23,9 @@
     <div class="row">
         <div class="col-sm-3">
             <div class="ztree_dropdown" id="ztree2"></div>
-        </div>
-        <div class="col-sm-3">
-            <button class="btn btn-sm btn-primary" id="btnGetChecked">getChecked</button>
+            <button class="btn btn-sm btn-primary" id="btnGetChecked">getChecked</button>=>
+            <input type="text" value="" id="tbxZtree2" />=>
+            <button class="btn btn-sm btn-primary" id="btnSetChecked">setChecked</button>
         </div>
     </div>
 
@@ -50,7 +50,11 @@
 
         $("#btnGetValues").click(function () {
             //alert($('input[name="ztree1"]').val());
-            alert(ztree1.getCheckedIds());
+            $("#tbxZtree1").val(ztree1.getCheckedIds());
+        })
+        $("#btnSetValues").click(function () {
+            //$('input[name="ztree1"]').val($("#tbxZtree1").val()).change()
+            ztree1.setSelectedId($("#tbxZtree1").val());
         })
 
         ////////////////
@@ -68,7 +72,11 @@
         var treeObj2 = ztree2.init()
 
         $("#btnGetChecked").click(function () {
-            alert(ztree2.getCheckedIds());
+            $("#tbxZtree2").val(ztree2.getCheckedIds());
+        })
+        $("#btnSetChecked").click(function () {
+            //$('input[name="ztree2"]').val($("#tbxZtree2").val()).change()
+            ztree2.setCheckedIds($("#tbxZtree2").val());
         })
 
     </script>

@@ -128,7 +128,7 @@ v15.1214.1802 // 添加函数fnModifySetting，可以在提交前自定义settin
 v15.1216.1722 // ztree添加fnOnClick/fnOnCheck/fnModifySetting,ztree，dropdown添加fnModifySetting
 v16.0929.1040 // ztree.dropdown添加fnOnClick/fnOnCheck
 v17.0525.1425 // 增加对modal的支持
-v18.0704.1758 // 增加mergeChildren属性
+v18.0704.1758 // 增加mergeChildren属性，增加set/getSelectedId，set/getCheckedIds函数
 
 
 
